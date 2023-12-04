@@ -13,8 +13,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColors.k121212,
-      backgroundColor: const Color(0xff23242E),
+      backgroundColor: AppColors.k23242E,
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: size.width(15), vertical: size.height(29)),
@@ -24,6 +23,7 @@ class WelcomeScreen extends StatelessWidget {
             size.heightSpace(38),
             SvgPicture.asset(
               AppImagePath.splashScreenLogo,
+                color: AppColors.k6167DE,
               height: size.height(84),
               width: size.width(84),
             ),

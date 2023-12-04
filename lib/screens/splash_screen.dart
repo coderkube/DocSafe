@@ -15,9 +15,9 @@ class SplashScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(child: SvgPicture.asset(AppImagePath.splashScreenLogo)),
+          Center(child: SvgPicture.asset(AppImagePath.splashScreenLogo, color: AppColors.k6167DE,)),
           size.heightSpace(22),
-          Text("docSafe".tr, style: AppTextStyle.docSafeSemiBoldText)
+          Text("docSafe".tr, style: AppTextStyle.semiBoldLargeText)
         ],
       ),
     );
