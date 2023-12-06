@@ -1,12 +1,15 @@
 import 'package:docsafe/config/localization.dart';
 import 'package:docsafe/config/root_binding.dart';
-import 'package:docsafe/screens/auth/sign_in_screen.dart';
-import 'package:docsafe/screens/auth/welcome_screen.dart';
-import 'package:docsafe/screens/splash_screen.dart';
+import 'package:docsafe/config/supabase_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'config/routing.dart';
 
-void main() {
+void main() async {
+  await Supabase.initialize(
+      url: SupaBaseManager.supabaseUrl,
+      anonKey: SupaBaseManager.supabaseAnonKey);
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -22,10 +25,9 @@ class MyApp extends StatelessWidget {
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
       fallbackLocale: const Locale("en", "US"),
-      theme: ThemeData(
-        fontFamily: "Barlow"
-      ),
-      home: const SignInScreen(),
+      theme: ThemeData(fontFamily: "Barlow"),
+      initialRoute: "/",
+      getPages: appRouting(),
     );
   }
 }

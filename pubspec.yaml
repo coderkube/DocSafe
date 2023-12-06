@@ -38,6 +38,9 @@ dependencies:
   get:
   flutter_svg:
   dynamicutils:
+  pinput:
+  smooth_page_indicator:
+  supabase_flutter:
 
 dev_dependencies:
   flutter_test:
