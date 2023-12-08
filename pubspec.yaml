@@ -21,8 +21,8 @@ dependencies:
   supabase_flutter :
   fluttertoast: ^8.2.2
   motion_toast:
-  uni_links:
-  url_launcher:
+  flutter_credit_card: ^4.0.1
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +36,13 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/icons/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
 
   fonts:
     - family: Barlow

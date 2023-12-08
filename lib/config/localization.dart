@@ -37,12 +37,13 @@ class Localization extends Translations {
       "confirm_password" : "Confirm Password",
       "not_match" : "Not Match",
       "hello,\t" : "Hello,\t",
-
-
       "my_space": "My Space",
       "rename":"Rename",
       "delete":"Delete",
       "pin":"Pin",
+      "card" : "Card",
+      "view_all" : "View All",
+      "recently_used" : "Recently Used",
     },
   };
 }

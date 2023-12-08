@@ -12,4 +12,10 @@ class AppImagePath {
   static const draggerImg = 'assets/images/ic_dragger.svg';
   static const folderImg = 'assets/images/ic_folder.svg';
   static const moreImg = 'assets/images/ic_more.svg';
+  static const cardImg = "assets/images/card.png";
+  static const fileImg = "assets/images/file.svg";
+  static const homeImg = "assets/icons/home.svg";
+  static const naviBarFileImg = "assets/icons/naviBar_file.svg";
+  static const groupImg = "assets/icons/group.svg";
+  static const settingImg = "assets/icons/setting.svg";
 }

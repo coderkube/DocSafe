@@ -16,6 +16,10 @@ static const Color k757575 = Color(0XFF757575);
 static const Color k3D3D3D = Color(0XFF3D3D3D);
 static const Color k111111 = Color(0XFF111111);
 static const Color kBlack38 = Colors.black38;
+static const Color k001421 = Color(0XFF001421);
+static const Color kd99238 = Color(0XFFd99238);
+static const Color k1D1F24 = Color(0XFF1D1F24);
+static const Color k676D75 = Color(0XFF676D75);
 }
 
 DynamicSize size = DynamicSize(812, 375);

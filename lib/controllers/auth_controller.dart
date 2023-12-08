@@ -2,7 +2,6 @@ import 'package:docsafe/config/color_file.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uni_links/uni_links.dart';
 import '../utils/toast.dart';
 
 class AuthController extends GetxController {
@@ -51,6 +50,9 @@ class AuthController extends GetxController {
             "first_name": firstNameController.text,
             "last_name": lastNameController.text
           });
+      kDebugPrint("Response--> ${response.session?.accessToken}");
+      kDebugPrint("Response--> ${response.user?.id}");
+      // kDebugPrint("Response--> ${response.user?.}");
       isLoading = false;
       update();
       Get.offNamed("/SignIn");
@@ -108,43 +110,6 @@ class AuthController extends GetxController {
       }
       kDebugPrint("----> Throw Exception --> $e");
     }
-  }
-
-  void initUniLinks() async {
-    try {
-      String? initialLink = await getInitialLink();
-      handleLink(initialLink!);
-      kDebugPrint("initialLink......$initialLink");
-    } catch (e) {
-      kDebugPrint("initUniLinks Catch Error ----> $e");
-    }
-
-    linkStream.listen(handleLink);
-  }
-
-  void handleLink(String? link) {
-    // Check if link is not null before processing
-    if (link != null) {
-      // Extract userId and resetToken from the link
-      // The link might look like: io.supabase.ekyjocxsvvedoxxwzllt://login-callback/?userId=123&token=xyz
-      Uri uri = Uri.parse(link);
-        userId = uri.queryParameters["userId"] ?? "";
-        resetToken = uri.queryParameters["token"] ?? "";
-      update();
-      kDebugPrint("User ID----> $userId");
-      kDebugPrint("resetToken----> $resetToken");
-      // Navigate to the password change screen
-      if (userId.isNotEmpty && resetToken.isNotEmpty) {
-        Get.offNamed("/ResetPassword");
-      }
-    }
-  }
-
-
-  @override
-  void onInit() {
-    initUniLinks();
-    super.onInit();
   }
 }
 // try {

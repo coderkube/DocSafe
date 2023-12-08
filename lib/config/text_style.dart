@@ -48,4 +48,14 @@ class AppTextStyle {
       fontWeight: FontWeight.w600,
       fontSize: size.height(16),
       color: AppColors.kF2F2F2);
+
+  static TextStyle semiBoldSmallText = TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: size.height(12),
+      color: AppColors.k23242E);
+
+  static TextStyle lightRegularText = TextStyle(
+      fontWeight: FontWeight.w300,
+      fontSize: size.height(14),
+      color: AppColors.kFFFFFF);
 }
