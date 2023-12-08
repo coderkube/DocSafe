@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:dynamicutils/Size/dynamicutils.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class AppColors {
 static const Color k121212 = Color(0XFF121212);
@@ -11,6 +13,13 @@ static const Color k707070 = Color(0XFF707070);
 static const Color k6167DE = Color(0XFF6167DE);
 static const Color k23242E = Color(0XFF23242E);
 static const Color k757575 = Color(0XFF757575);
+static const Color kBlack38 = Colors.black38;
 }
 
 DynamicSize size = DynamicSize(812, 375);
+
+kDebugPrint(String data) {
+  if (kDebugMode) {
+    print(data);
+  }
+}

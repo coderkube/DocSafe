@@ -11,6 +11,7 @@ class CheckMailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(seconds: 3), () => Get.offNamed("/OtpVerification"),);
     return Scaffold(
       backgroundColor: AppColors.k23242E,
       body: GetBuilder(

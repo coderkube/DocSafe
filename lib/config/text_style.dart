@@ -21,13 +21,13 @@ class AppTextStyle {
   static TextStyle semiBoldMediumText = TextStyle(
       fontWeight: FontWeight.w600,
       fontSize: size.height(12),
-      color: AppColors.k6167DE,
+      color: AppColors.k68D9A3,
       decoration: TextDecoration.underline);
 
   static TextStyle normalRegularText = TextStyle(
       fontWeight: FontWeight.w400,
       fontSize: size.height(14),
-      color: AppColors.k707070);
+      color: AppColors.kFFFFFF);
 
   static TextStyle mediumRegularText = TextStyle(
       fontWeight: FontWeight.w500,
@@ -38,4 +38,14 @@ class AppTextStyle {
       fontWeight: FontWeight.w700,
       fontSize: size.height(16),
       color: AppColors.kFFFFFF);
+
+  static TextStyle semiBoldMediumLargeText = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: size.height(20),
+  color: AppColors.k68D9A3);
+
+  static TextStyle semiBoldMediumRegularText = TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: size.height(16),
+      color: AppColors.kF2F2F2);
 }

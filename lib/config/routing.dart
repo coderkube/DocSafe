@@ -5,6 +5,7 @@ import 'package:docsafe/screens/auth/reset_password_screen.dart';
 import 'package:docsafe/screens/auth/sign_in_screen.dart';
 import 'package:docsafe/screens/auth/sign_up_screen.dart';
 import 'package:docsafe/screens/auth/welcome_screen.dart';
+import 'package:docsafe/screens/home/dashboard_screen.dart';
 import 'package:docsafe/screens/introduction_screen.dart';
 import 'package:docsafe/screens/splash_screen.dart';
 import 'package:get/get.dart';
@@ -19,4 +20,5 @@ appRouting() => [
       GetPage(name: "/OtpVerification", page: () => const OtpVerificationScreen()),
       GetPage(name: "/CreatePassword", page: () => const CreatePasswordScreen()),
       GetPage(name: "/OnBoarding", page: () => const OnBoardingScreen()),
+      GetPage(name: "/HomeScreen", page: () => const DashBoardScreen()),
     ];

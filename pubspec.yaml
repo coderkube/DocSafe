@@ -40,7 +40,11 @@ dependencies:
   dynamicutils:
   pinput:
   smooth_page_indicator:
-  supabase_flutter:
+  supabase_flutter :
+  fluttertoast: ^8.2.2
+  motion_toast:
+  uni_links:
+  url_launcher:
 
 dev_dependencies:
   flutter_test:

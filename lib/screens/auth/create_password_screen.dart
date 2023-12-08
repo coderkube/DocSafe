@@ -1,3 +1,4 @@
+import 'package:docsafe/components/app_bar.dart';
 import 'package:docsafe/components/button_view.dart';
 import 'package:docsafe/components/textformfield.dart';
 import 'package:docsafe/config/color_file.dart';
@@ -13,17 +14,7 @@ class CreatePasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.k23242E,
-      appBar: AppBar(
-        titleSpacing: 0,
-        elevation: 0,
-        backgroundColor: AppColors.k23242E,
-        iconTheme: const IconThemeData(color: AppColors.kF2F2F2),
-        title: Text(
-          "back".tr,
-          style: AppTextStyle.semiBoldRegularText
-              .copyWith(color: AppColors.kF2F2F2),
-        ),
-      ),
+      appBar: const AppBarCommon(),
       body: Padding(
         padding: EdgeInsets.symmetric(
             vertical: size.height(18), horizontal: size.width(15)),
@@ -45,39 +36,39 @@ class CreatePasswordScreen extends StatelessWidget {
                 ),
                 size.heightSpace(30),
                 TextFormFieldCommon(
-                  hintText: "Password",
-                  controller: controller.passwordController,
+                  labelText: "Password",
+                  controller: controller.createPasswordController,
                   suffixIcon: InkWell(
                       splashFactory: NoSplash.splashFactory,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        controller.visiblePassword =
-                            !controller.visiblePassword;
+                        controller.createVisiblePassword =
+                            !controller.createVisiblePassword;
                         controller.update();
                       },
-                      child: Icon(controller.visiblePassword
+                      child: Icon(controller.createVisiblePassword
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined)),
-                  obscureText: controller.visiblePassword,
+                  obscureText: controller.createVisiblePassword,
                   obscuringCharacter: '*',
                   keyboardType: TextInputType.visiblePassword,
                 ),
                 size.heightSpace(15),
                 TextFormFieldCommon(
-                  hintText: "Confirm Password",
+                  labelText: "Confirm Password",
                   controller: controller.confirmPasswordController,
                   suffixIcon: InkWell(
                       splashFactory: NoSplash.splashFactory,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        controller.confirmVisiblePassword =
-                            !controller.confirmVisiblePassword;
+                        controller.createConfirmVisiblePassword =
+                            !controller.createConfirmVisiblePassword;
                         controller.update();
                       },
-                      child: Icon(controller.confirmVisiblePassword
+                      child: Icon(controller.createConfirmVisiblePassword
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined)),
-                  obscureText: controller.confirmVisiblePassword,
+                  obscureText: controller.createConfirmVisiblePassword,
                   obscuringCharacter: '*',
                   keyboardType: TextInputType.visiblePassword,
                 ),

@@ -40,7 +40,7 @@ class OtpVerificationScreen extends StatelessWidget {
                       ),
                       size.heightSpace(30),
                       Form(
-                        key: controller.formKey,
+                        key: controller.otpFormKey,
                         child: Pinput(
                           length: 4,
                           controller: controller.otpController,
@@ -48,10 +48,7 @@ class OtpVerificationScreen extends StatelessWidget {
                           defaultPinTheme: PinTheme(
                             width: size.height(50),
                             height: size.height(50),
-                            textStyle: TextStyle(
-                                fontSize: size.height(20),
-                                color: AppColors.k6167DE,
-                                fontWeight: FontWeight.w600),
+                            textStyle: AppTextStyle.semiBoldMediumLargeText,
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: AppColors.kFFFFFF),
