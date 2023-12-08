@@ -13,6 +13,8 @@ static const Color k707070 = Color(0XFF707070);
 static const Color k6167DE = Color(0XFF6167DE);
 static const Color k23242E = Color(0XFF23242E);
 static const Color k757575 = Color(0XFF757575);
+static const Color k3D3D3D = Color(0XFF3D3D3D);
+static const Color k111111 = Color(0XFF111111);
 static const Color kBlack38 = Colors.black38;
 }
 

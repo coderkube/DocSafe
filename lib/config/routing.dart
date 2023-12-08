@@ -5,6 +5,7 @@ import 'package:docsafe/screens/auth/reset_password_screen.dart';
 import 'package:docsafe/screens/auth/sign_in_screen.dart';
 import 'package:docsafe/screens/auth/sign_up_screen.dart';
 import 'package:docsafe/screens/auth/welcome_screen.dart';
+import 'package:docsafe/screens/directory/my_space.dart';
 import 'package:docsafe/screens/home/dashboard_screen.dart';
 import 'package:docsafe/screens/introduction_screen.dart';
 import 'package:docsafe/screens/splash_screen.dart';
@@ -21,4 +22,5 @@ appRouting() => [
       GetPage(name: "/CreatePassword", page: () => const CreatePasswordScreen()),
       GetPage(name: "/OnBoarding", page: () => const OnBoardingScreen()),
       GetPage(name: "/HomeScreen", page: () => const DashBoardScreen()),
+      GetPage(name: "/MySpace", page: () => const MySpaceScreen()),
     ];
