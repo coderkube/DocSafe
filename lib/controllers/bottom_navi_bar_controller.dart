@@ -22,4 +22,5 @@ class BottomNaviBarController extends GetxController {
     }
     return true;
   }
+
 }

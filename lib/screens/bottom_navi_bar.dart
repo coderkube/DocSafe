@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/config/image_path.dart';
 import 'package:docsafe/controllers/bottom_navi_bar_controller.dart';
+import 'package:docsafe/controllers/my_space_controller.dart';
+import 'package:docsafe/main.dart';
+import 'package:docsafe/models/folder_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -45,6 +50,9 @@ class BottomNaviBar extends StatelessWidget {
                     )),
                 InkWell(
                     onTap: () {
+                      Get.find<MySpaceController>().folderList = (localStorage.read('folderList') as List<dynamic>?)?.map((e) => FolderInfo.fromJson(Map<String, dynamic>.from(e))).toList() ??[];
+                      Get.find<MySpaceController>().update();
+                      kDebugPrint("Json Decode List -----> ${Get.find<MySpaceController>().folderList.runtimeType}");
                       controller.selectedIndex = 1;
                       controller.update();
                     },

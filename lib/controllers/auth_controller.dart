@@ -110,7 +110,9 @@ class AuthController extends GetxController {
     try {
       await Supabase.instance.client.auth.resetPasswordForEmail(
           resetPasswordController.text,
-          redirectTo: "io.supabase.ekyjocxsvvedoxxwzllt://login-callback/");
+          redirectTo: "io.supabase.ekyjocxsvvedoxxwzllt://login-callback/").then((value) {
+            Get.toNamed("/CreatePassword");
+          });
 
       isLoading = false;
       update();

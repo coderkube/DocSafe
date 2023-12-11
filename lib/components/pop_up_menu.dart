@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 
 class PopUpButtonCommon extends StatelessWidget {
   final void Function(String)? onSelected;
-  const PopUpButtonCommon({super.key, this.onSelected});
+  final void Function()? deleteOnTap;
+  const PopUpButtonCommon({super.key, this.onSelected, this.deleteOnTap});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,7 @@ class PopUpButtonCommon extends StatelessWidget {
                 )),
             PopupMenuItem(
                 value: "Option 3",
+                onTap: deleteOnTap,
                 child: Text(
                   'delete'.tr,
                   style: AppTextStyle
