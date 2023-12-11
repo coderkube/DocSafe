@@ -44,6 +44,9 @@ class Localization extends Translations {
       "card" : "Card",
       "view_all" : "View All",
       "recently_used" : "Recently Used",
+      "add_file_or_folder" : "Add File or Folder",
+      "folder_name" : "Folder Name",
+      "create_folder" : "Create Folder",
     },
   };
 }

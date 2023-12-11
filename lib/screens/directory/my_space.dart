@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:docsafe/components/pop_up_menu.dart';
+import 'package:docsafe/components/textformfield.dart';
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/config/image_path.dart';
 import 'package:docsafe/config/text_style.dart';
@@ -49,7 +52,67 @@ class MySpaceScreen extends StatelessWidget {
         backgroundColor: AppColors.k23242E,
         body: SingleChildScrollView(
           controller: controller.scrollController,
-          child: Container(
+          child: controller.isEmptyData ?
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: SvgPicture.asset('assets/images/ic_empty_screen.svg')),
+                  size.heightSpace(40),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: AlertDialog(
+                              backgroundColor: AppColors.k3D3D3D,
+                              contentPadding: EdgeInsets.only(top: 0,left: 20,right: 20,bottom: 23),
+                              iconPadding: EdgeInsets.zero,
+                              icon: Align(
+                              alignment: AlignmentDirectional.topEnd,
+                              child: IconButton(onPressed: () {
+                                Get.back();
+                              }, icon: Icon(Icons.cancel_outlined,color: AppColors.kFFFFFF,)),
+                            ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextFormFieldCommon(
+                                    hintText: 'folder_name'.tr,
+                                    controller: controller.folderNameController,
+                                  ),
+                                  size.heightSpace(15),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10,horizontal: 35),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.k68D9A3,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Text('create_folder'.tr,style: AppTextStyle.semiBoldSmallText.copyWith(color: AppColors.k242424),),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 73),
+                      decoration: BoxDecoration(
+                        color: AppColors.k6167DE,
+                        borderRadius: BorderRadius.circular(100)
+                      ),
+                      child: Text('add_file_or_folder'.tr,style: AppTextStyle.semiBoldMediumRegularText.copyWith(color: AppColors.kFFFFFF),),
+                    ),
+                  )
+                ],
+              )
+              :Container(
             padding: const EdgeInsets.only(top: 10),
             child: controller.isListView == true ?
             ListView.separated(

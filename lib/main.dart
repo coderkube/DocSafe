@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       fallbackLocale: const Locale("en", "US"),
       theme: ThemeData(fontFamily: "Barlow"),
-      initialRoute: "/MySpace",
+      initialRoute: "/BottomBar",
       getPages: appRouting(),
     );
   }

@@ -3,7 +3,8 @@ import 'package:docsafe/config/text_style.dart';
 import 'package:flutter/material.dart';
 
 class TextFormFieldCommon extends StatelessWidget {
-  final String labelText;
+  final String? labelText;
+  final String? hintText;
   final TextEditingController controller;
   final Widget? suffixIcon;
   final bool obscureText;
@@ -13,9 +14,10 @@ class TextFormFieldCommon extends StatelessWidget {
 
   const TextFormFieldCommon({
     super.key,
-    required this.labelText,
+    this.labelText,
     required this.controller,
     this.suffixIcon,
+    this.hintText,
     this.obscureText = false,
     this.obscuringCharacter,
     this.keyboardType, this.validator,
@@ -31,6 +33,7 @@ class TextFormFieldCommon extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       decoration: InputDecoration(
+        hintText: hintText,
         labelText: labelText,
         suffixIcon: suffixIcon,
         contentPadding: EdgeInsets.symmetric(

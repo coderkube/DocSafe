@@ -1,3 +1,4 @@
+import 'package:docsafe/screens/directory/my_space.dart';
 import 'package:docsafe/screens/home/dashboard_screen.dart';
 import 'package:docsafe/screens/setting/setting_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +9,7 @@ class BottomNaviBarController extends GetxController {
 
   List<Widget> screens = [
     const DashBoardScreen(),
-    const SettingScreen(),
+    const MySpaceScreen(),
     const SettingScreen(),
     const SettingScreen(),
   ];
