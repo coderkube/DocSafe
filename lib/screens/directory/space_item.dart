@@ -150,7 +150,7 @@ class SpaceItemScreen extends StatelessWidget {
                                   leading: const Icon(Icons.photo_library),
                                   title: const Text('Gallery'),
                                   onTap: () {
-                                    controller.getVideo(ImageSource.gallery);
+                                    // controller.getVideo(ImageSource.gallery);
                                     Navigator.of(context).pop();
                                   },
                                 ),
@@ -158,7 +158,7 @@ class SpaceItemScreen extends StatelessWidget {
                                   leading: const Icon(Icons.photo_camera),
                                   title: const Text('Camera'),
                                   onTap: () {
-                                    controller.getVideo(ImageSource.camera);
+                                    // controller.getVideo(ImageSource.camera);
                                     Navigator.of(context).pop();
                                   },
                                 ),
