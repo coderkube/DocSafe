@@ -62,7 +62,6 @@ class MySpaceScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     controller.createFolder();
-                                    controller.folderNameController.clear();
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -116,8 +115,121 @@ class MySpaceScreen extends StatelessWidget {
           backgroundColor: AppColors.k23242E,
           body: SingleChildScrollView(
             controller: controller.scrollController,
-            child: controller.folderList.isEmpty
-                ? Column(
+            child: controller.folderList!.isNotEmpty
+                ? Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: controller.isListView == true
+                        ? ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return size.heightSpace(5);
+                            },
+                            shrinkWrap: true,
+                            controller: controller.scrollController,
+                            itemCount: controller.folderList!.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () {
+                                  controller.selectedIndex = index;
+                                  controller.update();
+                                  Get.toNamed("/SpaceItem");
+                                },
+                                title: Row(
+                                  children: [
+                                    SvgPicture.asset(AppImagePath.folderImg),
+                                    size.widthSpace(10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${controller.folderList?[index].name}",
+                                          style: AppTextStyle.boldRegularText
+                                              .copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Text(
+                                          "${controller.folderList?[index].createdAt}",
+                                          style: AppTextStyle.mediumRegularText
+                                              .copyWith(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                trailing: PopUpButtonCommon(
+                                  onSelected: (value) {
+                                    controller.popUpMenuInitialValue = value;
+                                    controller.update();
+                                  },
+                                ),
+                              );
+                            },
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: GridView.builder(
+                              itemCount: 5,
+                              controller: controller.scrollController,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 15,
+                                      crossAxisSpacing: 15),
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.k3D3D3D),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SvgPicture.asset(
+                                              AppImagePath.folderImg),
+                                          PopUpButtonCommon(
+                                            onSelected: (value) {
+                                              controller.popUpMenuInitialValue =
+                                                  value;
+                                              controller.update();
+                                            },
+                                            deleteOnTap: () {},
+                                          ),
+                                        ],
+                                      ),
+                                      size.heightSpace(10),
+                                      Text(
+                                        'Lorem lobby',
+                                        style: AppTextStyle.boldRegularText
+                                            .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14),
+                                      ),
+                                      Text(
+                                        'Created on 24-12-2023 (11:45:09) ',
+                                        style: AppTextStyle.mediumRegularText
+                                            .copyWith(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 10),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                  )
+                : Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -201,116 +313,6 @@ class MySpaceScreen extends StatelessWidget {
                         ),
                       )
                     ],
-                  )
-                : Container(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: controller.isListView == true
-                        ? ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return size.heightSpace(5);
-                            },
-                            shrinkWrap: true,
-                            controller: controller.scrollController,
-                            itemCount: controller.folderList.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading:
-                                    SvgPicture.asset(AppImagePath.draggerImg),
-                                title: Row(
-                                  children: [
-                                    SvgPicture.asset(AppImagePath.folderImg),
-                                    size.widthSpace(10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          controller.folderList[index].name,
-                                          style: AppTextStyle.boldRegularText
-                                              .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Created on',
-                                          style: AppTextStyle.mediumRegularText
-                                              .copyWith(
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 10,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                trailing: PopUpButtonCommon(
-                                  onSelected: (value) {
-                                    controller.popUpMenuInitialValue = value;
-                                    controller.update();
-                                  },
-                                ),
-                              );
-                            },
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15),
-                            child: GridView.builder(
-                              itemCount: 5,
-                              controller: controller.scrollController,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 15,
-                                      crossAxisSpacing: 15),
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: AppColors.k3D3D3D),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SvgPicture.asset(
-                                              AppImagePath.folderImg),
-                                          PopUpButtonCommon(
-                                            onSelected: (value) {
-                                              controller.popUpMenuInitialValue =
-                                                  value;
-                                              controller.update();
-                                            },
-                                            deleteOnTap: () {},
-                                          ),
-                                        ],
-                                      ),
-                                      size.heightSpace(10),
-                                      Text(
-                                        'Lorem lobby',
-                                        style: AppTextStyle.boldRegularText
-                                            .copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14),
-                                      ),
-                                      Text(
-                                        'Created on 24-12-2023 (11:45:09) ',
-                                        style: AppTextStyle.mediumRegularText
-                                            .copyWith(
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 10),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
                   ),
           ),
         );
@@ -318,24 +320,3 @@ class MySpaceScreen extends StatelessWidget {
     );
   }
 }
-// body: FutureBuilder<List<Directory>>(
-// future: controller.getFolders(),
-// builder: (context, snapshot) {
-// if (snapshot.connectionState == ConnectionState.waiting) {
-// return CircularProgressIndicator();
-// } else if (snapshot.hasError) {
-// return Text('Error: ${snapshot.error}');
-// } else {
-// List<Directory> folders = snapshot.data ?? [];
-// return ListView.builder(
-// itemCount: folders.length,
-// itemBuilder: (context, index) {
-// return ListTile(
-// title: Text(folders[index].path, style: TextStyle(color: Colors.white),),
-// // Add more properties or actions as needed
-// );
-// },
-// );
-// }
-// },
-// ),

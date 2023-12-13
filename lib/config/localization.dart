@@ -30,6 +30,7 @@ class Localization extends Translations {
       "email" : "Email",
       "please_enter_first_name" : "Please Enter First Name",
       "please_enter_last_name" : "Please Enter Last Name",
+      "please_enter_last_name" : "Please Enter Last Name",
       "password" : "Password",
       "please_enter_password" : "Please Enter Password",
       "must_be_more_than_5_character" : "Must be more than 5 character",
@@ -47,6 +48,7 @@ class Localization extends Translations {
       "add_file_or_folder" : "Add File or Folder",
       "folder_name" : "Folder Name",
       "create_folder" : "Create Folder",
+      "my_space_item" : "My Space Item",
     },
   };
 }

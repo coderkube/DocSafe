@@ -7,6 +7,7 @@ import 'package:docsafe/screens/auth/sign_up_screen.dart';
 import 'package:docsafe/screens/auth/welcome_screen.dart';
 import 'package:docsafe/screens/directory/my_space.dart';
 import 'package:docsafe/screens/bottom_navi_bar.dart';
+import 'package:docsafe/screens/directory/space_item.dart';
 import 'package:docsafe/screens/home/dashboard_screen.dart';
 import 'package:docsafe/screens/introduction_screen.dart';
 import 'package:docsafe/screens/splash_screen.dart';
@@ -25,4 +26,5 @@ appRouting() => [
       GetPage(name: "/HomeScreen", page: () => const DashBoardScreen()),
       GetPage(name: "/MySpace", page: () => const MySpaceScreen()),
       GetPage(name: "/BottomBar", page: () => const BottomNaviBar()),
+      GetPage(name: "/SpaceItem", page: () => const SpaceItemScreen()),
     ];

@@ -26,6 +26,9 @@ dependencies:
   get_storage:
   permission_handler: ^11.1.0
   path_provider:
+  image_picker:
+  file_picker:
+  syncfusion_flutter_pdfviewer: ^23.2.7
 
 dev_dependencies:
   flutter_test:
