@@ -1,3 +1,4 @@
+import 'package:docsafe/controllers/add_card_controller.dart';
 import 'package:docsafe/controllers/auth_controller.dart';
 import 'package:docsafe/controllers/dash_board_controller.dart';
 import 'package:docsafe/controllers/my_space_controller.dart';
@@ -17,5 +18,6 @@ class RootBinding extends Bindings {
     Get.put(BottomNaviBarController());
     Get.put(SettingController());
     Get.put(DashBoardController());
+    Get.put(CardController());
   }
 }

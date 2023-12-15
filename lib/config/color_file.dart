@@ -22,6 +22,7 @@ static const Color k1D1F24 = Color(0XFF1D1F24);
 static const Color k676D75 = Color(0XFF676D75);
 static const Color k242424 = Color(0XFF242424);
 static const Color k000000 = Color(0XFF000000);
+static const Color kB370DD = Color(0XFFB370DD);
 }
 
 DynamicSize size = DynamicSize(812, 375);

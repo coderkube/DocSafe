@@ -49,6 +49,12 @@ class Localization extends Translations {
       "folder_name" : "Folder Name",
       "create_folder" : "Create Folder",
       "my_space_item" : "My Space Item",
+      "card_holder_name" : "Card Holder's name",
+      "card_number" : "Card Number",
+      "add_card" : "Add Card",
+      "expiry_date" : "Expiry Date",
+      "security_code" : "Security Code",
+      "save_to_wallet" : "Save To Wallet",
     },
   };
 }

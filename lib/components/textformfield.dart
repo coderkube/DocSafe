@@ -8,8 +8,10 @@ class TextFormFieldCommon extends StatelessWidget {
   final TextEditingController controller;
   final Widget? suffixIcon;
   final bool obscureText;
+  final int? maxLength;
   final String? obscuringCharacter;
   final TextInputType? keyboardType;
+  final Function(String)? onChanged;
   final String? Function(dynamic value)? validator;
 
   const TextFormFieldCommon({
@@ -20,7 +22,7 @@ class TextFormFieldCommon extends StatelessWidget {
     this.hintText,
     this.obscureText = false,
     this.obscuringCharacter,
-    this.keyboardType, this.validator,
+    this.keyboardType, this.validator, this.maxLength, this.onChanged,
   });
 
   @override
@@ -32,12 +34,19 @@ class TextFormFieldCommon extends StatelessWidget {
       obscuringCharacter: obscuringCharacter ?? "*",
       keyboardType: keyboardType,
       validator: validator,
+      maxLength: maxLength,
+      onChanged: onChanged,
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,
         suffixIcon: suffixIcon,
         contentPadding: EdgeInsets.symmetric(
             vertical: size.height(13), horizontal: size.width(10)),
+        hintStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: AppColors.k707070
+        ),
         labelStyle: AppTextStyle.normalRegularText
             .copyWith(fontSize: size.height(16)),
         border: OutlineInputBorder(
