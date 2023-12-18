@@ -1,8 +1,10 @@
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/config/image_path.dart';
+import 'package:docsafe/controllers/add_card_controller.dart';
 import 'package:docsafe/controllers/bottom_navi_bar_controller.dart';
 import 'package:docsafe/controllers/my_space_controller.dart';
 import 'package:docsafe/main.dart';
+import 'package:docsafe/models/card_model.dart';
 import 'package:docsafe/models/folder_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -84,6 +86,17 @@ class BottomNaviBar extends StatelessWidget {
                     onTap: () {
                       controller.selectedIndex = 2;
                       controller.update();
+
+                      // localStorage.remove('folderList');
+
+                      Get.find<CardController>().cardList =
+                          (localStorage.read('cardList') as List<dynamic>?)
+                              ?.map((e) => CardModel.fromJson(
+                              Map<String, dynamic>.from(e)))
+                              .toList() ??
+                              [];
+
+                      Get.find<MySpaceController>().update();
                     },
                     child: controller.selectedIndex == 2
                         ? Container(

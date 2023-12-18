@@ -55,6 +55,7 @@ class Localization extends Translations {
       "expiry_date" : "Expiry Date",
       "security_code" : "Security Code",
       "save_to_wallet" : "Save To Wallet",
+      "my_cards" : "My Cards",
     },
   };
 }

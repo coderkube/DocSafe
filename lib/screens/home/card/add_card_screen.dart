@@ -103,18 +103,23 @@ class AddCardScreen extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.all(15),
-          height: 80,
-          color: AppColors.k23242E,
+        bottomNavigationBar: GestureDetector(
+          onTap: (){
+            controller.createCard();
+          },
           child: Container(
-            height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.k6167DE,
-                border: Border.all(color: AppColors.kFFFFFF,width: 2)
-              ),
-              child: Center(child: Text('save_to_wallet'.tr,style: AppTextStyle.semiBoldRegularText.copyWith(color: AppColors.kFFFFFF),))),
+            padding: const EdgeInsets.all(15),
+            height: 80,
+            color: AppColors.k23242E,
+            child: Container(
+              height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.k6167DE,
+                  border: Border.all(color: AppColors.kFFFFFF,width: 2)
+                ),
+                child: Center(child: Text('save_to_wallet'.tr,style: AppTextStyle.semiBoldRegularText.copyWith(color: AppColors.kFFFFFF),))),
+          ),
         ),
       );
     },);

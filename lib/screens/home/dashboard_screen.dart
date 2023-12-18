@@ -206,7 +206,6 @@ class DashBoardScreen extends StatelessWidget {
                   return Column(
                     children: [
                       SvgPicture.asset(AppImagePath.fileImg),
-                      size.heightSpace(10),
                       Text("Loreds",
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyle.lightRegularText)
