@@ -35,22 +35,22 @@ class DocModel {
 
 class Files {
   String? mimeType;
-  String? base64;
+  String? path;
   String? name;
 
-  Files({this.mimeType, this.base64});
+  Files({this.mimeType, this.path});
 
   Files.fromJson(Map<String, dynamic> json) {
     mimeType = json['mimeType'];
     name = json['name'];
-    base64 = json['base64'];
+    path = json['path'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['mimeType'] = mimeType;
     data['name'] = name;
-    data['base64'] = base64;
+    data['path'] = path;
     return data;
   }
 }

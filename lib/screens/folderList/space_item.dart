@@ -4,9 +4,8 @@ import 'package:docsafe/controllers/my_space_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import '../../config/image_path.dart';
-import 'full_screen_img.dart';
 
 class SpaceItemScreen extends StatelessWidget {
   const SpaceItemScreen({super.key});
@@ -136,40 +135,6 @@ class SpaceItemScreen extends StatelessWidget {
                       },
                       child: SvgPicture.asset(AppImagePath.newFileImg)),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return SafeArea(
-                            child: Wrap(
-                              children: <Widget>[
-                                ListTile(
-                                  leading: const Icon(Icons.photo_library),
-                                  title: const Text('Gallery'),
-                                  onTap: () {
-                                    // controller.getVideo(ImageSource.gallery);
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.photo_camera),
-                                  title: const Text('Camera'),
-                                  onTap: () {
-                                    // controller.getVideo(ImageSource.camera);
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                      child: const Icon(Icons.video_camera_back_outlined, color: AppColors.k6167DE,)),
-                )
               ],
             ),
             body: SingleChildScrollView(
@@ -207,12 +172,13 @@ class SpaceItemScreen extends StatelessWidget {
                                 : Icon(Icons.image,
                                     color: AppColors.k676D75,
                                     size: size.height(30)),
-                            onTap: () {
-                              Get.to(FullScreenImgScreen(
-                                imageFile:
-                                    "${controller.folderList?[controller.selectedIndex].files?[index].base64}",
-                                index: index,
-                              ));
+                            onTap: () async {
+                              await OpenFile.open("${controller.folderList?[controller.selectedIndex].files?[index].path}");
+                              // Get.to(FullScreenImgScreen(
+                              //   imageFile:
+                              //       "${controller.folderList?[controller.selectedIndex].files?[index].base64}",
+                              //   index: index,
+                              // ));
                             },
                             title: Row(
                               children: [
