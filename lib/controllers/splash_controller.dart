@@ -8,7 +8,7 @@ class SplashController extends GetxController {
       const Duration(seconds: 5),
       () {
         if (Supabase.instance.client.auth.currentSession?.user != null) {
-          return Get.offNamed("/BottomBar");
+          return Get.offNamed("/Pin");
         } else {
           return Get.offNamed("/OnBoarding");
         }

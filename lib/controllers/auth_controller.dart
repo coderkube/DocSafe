@@ -1,6 +1,5 @@
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/main.dart';
-import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

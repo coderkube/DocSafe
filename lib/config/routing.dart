@@ -35,4 +35,5 @@ appRouting() => [
       GetPage(name: "/Card", page: () => const CardsScreen()),
       GetPage(name: "/Setting", page: () => const SettingScreen()),
       GetPage(name: "/PinSet", page: () => const PinSetScreen()),
+      GetPage(name: "/Pin", page: () => const PinScreen()),
     ];
