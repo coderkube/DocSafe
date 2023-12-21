@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       translations: Localization(),
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
-      fallbackLocale: const Locale("en", "US"),
+      fallbackLocale: const Locale("hi", "IN"),
       theme: ThemeData(fontFamily: "Barlow"),
       initialRoute: "/",
       getPages: appRouting(),
