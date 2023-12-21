@@ -4,8 +4,10 @@ class DocModel {
   List<Files>? files;
   String? createdAt;
   String? updatedAt;
+  String? path;
+  late bool isPinned;
 
-  DocModel({this.name, this.type, this.files, this.createdAt, this.updatedAt});
+  DocModel({this.name, this.type, this.files, this.createdAt, this.updatedAt, this.path, this.isPinned = false});
 
   DocModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -18,6 +20,8 @@ class DocModel {
     }
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    path = json['path'];
+    isPinned = json['isPinned'];
   }
 
   Map<String, dynamic> toJson() {
@@ -29,6 +33,8 @@ class DocModel {
     }
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['path'] = path;
+    data['isPinned'] = isPinned;
     return data;
   }
 }
@@ -38,7 +44,7 @@ class Files {
   String? path;
   String? name;
 
-  Files({this.mimeType, this.path});
+  Files({this.mimeType, this.path, this.name});
 
   Files.fromJson(Map<String, dynamic> json) {
     mimeType = json['mimeType'];

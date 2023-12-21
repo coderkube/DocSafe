@@ -11,22 +11,27 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.k23242E,
-      body: GetBuilder(
-        init: Get.find<SplashController>(),
-        builder: (controller) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(child: SvgPicture.asset(
-                AppImagePath.splashScreenLogo, color: AppColors.k6167DE,)),
-              size.heightSpace(22),
-              Text("docSafe".tr, style: AppTextStyle.semiBoldLargeText)
-            ],
-          );
-        },
-      ),
+    return GetBuilder(
+      init: Get.find<SplashController>(),
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: AppColors.k23242E,
+          body: GetBuilder(
+            init: Get.find<SplashController>(),
+            builder: (controller) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: SvgPicture.asset(
+                    AppImagePath.splashScreenLogo, color: AppColors.k6167DE,)),
+                  size.heightSpace(22),
+                  Text("docSafe".tr, style: AppTextStyle.semiBoldLargeText)
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

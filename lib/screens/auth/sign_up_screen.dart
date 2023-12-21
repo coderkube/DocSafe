@@ -173,7 +173,7 @@ class SignUpScreen extends StatelessWidget {
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                              text: "by_continuing,_you_agree_to DSA's\t".tr,
+                              text: "by_continuing,_you_agree_to_DSA's\t".tr,
                               style: AppTextStyle.normalSmallText,
                               children: [
                                 TextSpan(

@@ -1,7 +1,6 @@
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/main.dart';
-import 'package:docsafe/screens/auth/create_password_screen.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -28,6 +27,7 @@ class AuthController extends GetxController {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController otpController = TextEditingController();
+  TextEditingController pinController = TextEditingController();
   final TextEditingController createPasswordController =
       TextEditingController();
 
@@ -50,27 +50,22 @@ class AuthController extends GetxController {
       final response = await Supabase.instance.client.auth.signUp(
         email: signUpEmailController.text,
         password: signUpPasswordController.text,
-        // data: {
-        //   "first_name": firstNameController.text,
-        //   "last_name": lastNameController.text
-        // }
       );
       await Supabase.instance.client.from("users").insert({
         "first_name": firstNameController.text,
         "last_name": lastNameController.text,
         "email": signUpEmailController.text
       });
-      // kDebugPrint("session?.accessToken--> ${response.session?.accessToken}");
-      // kDebugPrint("user?.id--> ${response.user?.id}");
-      // kDebugPrint("providerRefreshToken--> ${response.session?.providerRefreshToken}");
-      // kDebugPrint("accessToken--> ${response.session?.accessToken}");
-      // kDebugPrint("providerToken--> ${response.session?.providerToken}");
-      // kDebugPrint("refreshToken--> ${response.session?.refreshToken}");
       localStorage.write('userid', response.user?.id);
       isLoading = false;
       update();
       Get.offNamed("/SignIn");
       Toast.successToast(message: "Register Successfully !!");
+      firstNameController.clear();
+      lastNameController.clear();
+      signUpEmailController.clear();
+      signUpPasswordController.clear();
+      signUpConfirmPasswordController.clear();
     } catch (e) {
       isLoading = false;
       update();
@@ -82,17 +77,18 @@ class AuthController extends GetxController {
     }
   }
 
-  void signIn() async {
+  Future<void> signIn() async {
     isLoading = true;
     update();
     try {
       final response = await Supabase.instance.client.auth.signInWithPassword(
           email: signInEmailController.text,
           password: signInPasswordController.text);
-      isLoading = false;
-      update();
-      Get.offNamed("/HomeScreen");
+
       Toast.successToast(message: "Login Successfully !!");
+      signInEmailController.clear();
+      signInPasswordController.clear();
+      Get.offAllNamed("/PinSet");
     } catch (e) {
       isLoading = false;
       update();
@@ -102,6 +98,8 @@ class AuthController extends GetxController {
         kDebugPrint("An error occurred: $e");
       }
     }
+    isLoading = false;
+    update();
   }
 
   void resetPasswordForEmail() async {
@@ -127,16 +125,4 @@ class AuthController extends GetxController {
       kDebugPrint("----> Throw Exception --> $e");
     }
   }
-
-  // @override
-  // void onInit() {
-  //   final authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((data) {
-  //     final AuthChangeEvent event = data.event;
-  //     if (event == AuthChangeEvent.passwordRecovery) {
-  //       Get.toNamed("/CreatePassword", preventDuplicates: true);
-  //     }
-  //   });
-  //   authSubscription.cancel();
-  //   super.onInit();
-  // }
 }

@@ -4,10 +4,13 @@ import 'package:docsafe/components/textformfield.dart';
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/config/image_path.dart';
 import 'package:docsafe/config/text_style.dart';
+import 'package:docsafe/controllers/dash_board_controller.dart';
 import 'package:docsafe/controllers/my_space_controller.dart';
+import 'package:docsafe/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
 
 class MySpaceScreen extends StatelessWidget {
   const MySpaceScreen({super.key});
@@ -19,6 +22,9 @@ class MySpaceScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
+            iconTheme: const IconThemeData(
+              color: AppColors.kFFFFFF,
+            ),
             backgroundColor: AppColors.k23242E,
             elevation: 0,
             title: Text('my_space'.tr,
@@ -91,7 +97,10 @@ class MySpaceScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SvgPicture.asset(AppImagePath.newFileImg),
+                child: InkWell(
+                    onTap: () async {
+                      controller.spaceScreenPickFiles();
+                },child: SvgPicture.asset(AppImagePath.newFileImg)),
               ),
               InkWell(
                 onTap: () {
@@ -115,117 +124,701 @@ class MySpaceScreen extends StatelessWidget {
           backgroundColor: AppColors.k23242E,
           body: SingleChildScrollView(
             controller: controller.scrollController,
-            child: controller.folderList!.isNotEmpty
+            child: (controller.folderList.isNotEmpty ||
+                    controller.pinFolderList.isNotEmpty)
                 ? Container(
                     padding: const EdgeInsets.only(top: 10),
                     child: controller.isListView == true
-                        ? ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return size.heightSpace(5);
-                            },
-                            shrinkWrap: true,
-                            controller: controller.scrollController,
-                            itemCount: controller.folderList!.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {
-                                  controller.selectedIndex = index;
-                                  controller.update();
-                                  Get.toNamed("/SpaceItem");
+                        ? Column(
+                            children: [
+                              ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return size.heightSpace(5);
                                 },
-                                title: Row(
-                                  children: [
-                                    SvgPicture.asset(AppImagePath.folderImg),
-                                    size.widthSpace(10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                shrinkWrap: true,
+                                controller: controller.scrollController,
+                                itemCount: controller.pinFolderList.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () async {
+                                      if(controller.pinFolderList[index].type == 'folder'){
+                                        controller.selectedIndex = index;
+                                        controller.update();
+                                        Get.toNamed("/SpaceItem");
+                                      } else {
+                                        await OpenFile.open("${controller.pinFolderList[index].path}");
+                                      }
+                                    },
+                                    leading: Icon(Icons.push_pin,
+                                        size: size.height(17),
+                                        color: AppColors.k68D9A3),
+                                    title: Row(
                                       children: [
-                                        Text(
-                                          "${controller.folderList?[index].name}",
-                                          style: AppTextStyle.boldRegularText
-                                              .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          "${controller.folderList?[index].createdAt}",
-                                          style: AppTextStyle.mediumRegularText
-                                              .copyWith(
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 10,
+                                        controller.pinFolderList[index].type == 'folder' ?
+                                        SvgPicture.asset(
+                                            AppImagePath.folderImg) :
+                                        Icon(Icons.picture_as_pdf_sharp,
+                                            color: AppColors.k676D75,
+                                            size: size.height(30)),
+                                        size.widthSpace(10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${controller.pinFolderList[index].name}",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: AppTextStyle
+                                                    .boldRegularText
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${controller.pinFolderList[index].createdAt}",
+                                                style: AppTextStyle
+                                                    .mediumRegularText
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 10,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                trailing: PopUpButtonCommon(
-                                  onSelected: (value) {
-                                    controller.popUpMenuInitialValue = value;
-                                    controller.update();
-                                  },
-                                ),
-                              );
-                            },
+                                    trailing: PopUpButtonCommon(
+                                      pinText: 'unpin'.tr,
+                                      onSelected: (value) {
+                                        controller.popUpMenuInitialValue =
+                                            value;
+                                        controller.update();
+                                      },
+                                      pinOnTap: () async {
+                                        controller.folderList.add(
+                                            controller.pinFolderList[index]);
+                                        await localStorage.write(
+                                            'folderList',
+                                            controller.folderList
+                                                .map((e) => e.toJson())
+                                                .toList());
+                                        controller.pinFolderList
+                                            .removeAt(index);
+                                        await localStorage.write(
+                                            'pinFolderList',
+                                            controller.pinFolderList
+                                                .map((e) => e.toJson())
+                                                .toList());
+                                        controller.update();
+                                      },
+                                      deleteOnTap: () async {
+                                        controller.pinFolderList
+                                            .removeAt(index);
+                                        await localStorage.write(
+                                            'pinFolderList',
+                                            controller.pinFolderList
+                                                .map((e) => e.toJson())
+                                                .toList());
+                                      },
+                                      editOnTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              backgroundColor: AppColors.k3D3D3D,
+                                              contentPadding: EdgeInsets.only(
+                                                  top: 0,
+                                                  left: 20,
+                                                  right: 20,
+                                                  bottom: 23),
+                                              iconPadding: EdgeInsets.zero,
+                                              icon: Align(
+                                                alignment:
+                                                AlignmentDirectional.topEnd,
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      Get.back();
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.cancel_outlined,
+                                                      color: AppColors.kFFFFFF,
+                                                    )),
+                                              ),
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  TextFormFieldCommon(
+                                                    hintText: 'folder_name'.tr,
+                                                    controller: controller
+                                                        .folderNameController,
+                                                  ),
+                                                  size.heightSpace(15),
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      String newName = controller
+                                                          .folderNameController.text;
+                                                      if (newName.isNotEmpty) {
+                                                        controller
+                                                            .pinFolderList[index]
+                                                            .name = newName;
+                                                        await localStorage.write(
+                                                            'pinFolderList',
+                                                            controller.pinFolderList
+                                                                .map((e) =>
+                                                                e.toJson())
+                                                                .toList());
+                                                        controller.update();
+                                                        Get.find<
+                                                            DashBoardController>()
+                                                            .update();
+                                                      }
+                                                      Get.back();
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(
+                                                          vertical: 10,
+                                                          horizontal: 35),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.k68D9A3,
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                      ),
+                                                      child: Text(
+                                                        'Edit Folder Name',
+                                                        style: AppTextStyle
+                                                            .semiBoldSmallText
+                                                            .copyWith(
+                                                            color: AppColors
+                                                                .k242424),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                              ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return size.heightSpace(5);
+                                },
+                                shrinkWrap: true,
+                                controller: controller.scrollController,
+                                itemCount: controller.folderList.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () async {
+                                      if(controller.folderList[index].type == 'folder'){
+                                        controller.selectedIndex = index;
+                                        controller.update();
+                                        Get.toNamed("/SpaceItem");
+                                      } else {
+                                        await OpenFile.open("${controller.folderList[index].path}");
+                                      }
+                                    },
+                                    title: Row(
+                                      children: [
+                                        controller.folderList[index].type == 'folder' ?
+                                        SvgPicture.asset(
+                                            AppImagePath.folderImg) :
+                                        Icon(Icons.picture_as_pdf_sharp,
+                                            color: AppColors.k676D75,
+                                            size: size.height(30)),
+                                        size.widthSpace(10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${controller.folderList[index].name}",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: AppTextStyle
+                                                    .boldRegularText
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${controller.folderList[index].createdAt}",
+                                                style: AppTextStyle
+                                                    .mediumRegularText
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 10,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    trailing: PopUpButtonCommon(
+                                      onSelected: (value) {
+                                        controller.popUpMenuInitialValue =
+                                            value;
+                                        controller.update();
+                                      },
+                                      pinOnTap: () async {
+                                        controller.pinFolderList
+                                            .add(controller.folderList[index]);
+                                        await localStorage.write(
+                                            'pinFolderList',
+                                            controller.pinFolderList
+                                                .map((e) => e.toJson())
+                                                .toList());
+                                        controller.folderList.removeAt(index);
+                                        await localStorage.write(
+                                            'folderList',
+                                            controller.folderList
+                                                .map((e) => e.toJson())
+                                                .toList());
+                                        controller.update();
+                                        Get.find<DashBoardController>()
+                                            .update();
+                                      },
+                                      deleteOnTap: () async {
+                                        controller.folderList.removeAt(index);
+                                        await localStorage.write(
+                                            'folderList',
+                                            controller.folderList
+                                                .map((e) => e.toJson())
+                                                .toList());
+                                      },
+                                      editOnTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              backgroundColor: AppColors.k3D3D3D,
+                                              contentPadding: EdgeInsets.only(
+                                                  top: 0,
+                                                  left: 20,
+                                                  right: 20,
+                                                  bottom: 23),
+                                              iconPadding: EdgeInsets.zero,
+                                              icon: Align(
+                                                alignment:
+                                                AlignmentDirectional.topEnd,
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      Get.back();
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.cancel_outlined,
+                                                      color: AppColors.kFFFFFF,
+                                                    )),
+                                              ),
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  TextFormFieldCommon(
+                                                    hintText: 'folder_name'.tr,
+                                                    controller: controller
+                                                        .folderNameController,
+                                                  ),
+                                                  size.heightSpace(15),
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      String newName = controller
+                                                          .folderNameController.text;
+                                                      if (newName.isNotEmpty) {
+                                                        controller
+                                                            .folderList[index]
+                                                            .name = newName;
+                                                        await localStorage.write(
+                                                            'folderList',
+                                                            controller.folderList
+                                                                .map((e) =>
+                                                                e.toJson())
+                                                                .toList());
+                                                        controller.update();
+                                                        Get.find<
+                                                            DashBoardController>()
+                                                            .update();
+                                                      }
+                                                      Get.back();
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(
+                                                          vertical: 10,
+                                                          horizontal: 35),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.k68D9A3,
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                      ),
+                                                      child: Text(
+                                                        'Edit Folder Name',
+                                                        style: AppTextStyle
+                                                            .semiBoldSmallText
+                                                            .copyWith(
+                                                            color: AppColors
+                                                                .k242424),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           )
                         : Padding(
                             padding: const EdgeInsets.only(left: 15, right: 15),
-                            child: GridView.builder(
-                              itemCount: 5,
-                              controller: controller.scrollController,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 15,
-                                      crossAxisSpacing: 15),
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: AppColors.k3D3D3D),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SvgPicture.asset(
-                                              AppImagePath.folderImg),
-                                          PopUpButtonCommon(
-                                            onSelected: (value) {
-                                              controller.popUpMenuInitialValue =
-                                                  value;
-                                              controller.update();
-                                            },
-                                            deleteOnTap: () {},
-                                          ),
-                                        ],
-                                      ),
-                                      size.heightSpace(10),
-                                      Text(
-                                        'Lorem lobby',
-                                        style: AppTextStyle.boldRegularText
-                                            .copyWith(
+                            child: Column(
+                              children: [
+                                GridView.builder(
+                                  itemCount: controller.pinFolderList.length,
+                                  controller: controller.scrollController,
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 15,
+                                          crossAxisSpacing: 15),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        controller.selectedIndex = index;
+                                        controller.update();
+                                        Get.toNamed("/SpaceItem");
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: AppColors.k3D3D3D),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    AppImagePath.folderImg),
+                                                Icon(Icons.push_pin,
+                                                    size: size.height(17),
+                                                    color: AppColors.k68D9A3),
+                                                PopUpButtonCommon(
+                                                  pinText: "Unpin",
+                                                  onSelected: (value) {
+                                                    controller
+                                                            .popUpMenuInitialValue =
+                                                        value;
+                                                    controller.update();
+                                                  },
+                                                  deleteOnTap: () async {
+                                                    controller.pinFolderList.removeAt(index);
+                                                    await localStorage.write('pinFolderList', controller.pinFolderList.map((e) => e.toJson()).toList());
+                                                  },
+                                                  pinOnTap: () {
+                                                    controller.folderList.add(
+                                                        controller
+                                                                .pinFolderList[
+                                                            index]);
+                                                    controller.pinFolderList
+                                                        .removeAt(index);
+                                                    controller.update();
+                                                  },
+                                                  editOnTap: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          backgroundColor: AppColors.k3D3D3D,
+                                                          contentPadding: EdgeInsets.only(
+                                                              top: 0,
+                                                              left: 20,
+                                                              right: 20,
+                                                              bottom: 23),
+                                                          iconPadding: EdgeInsets.zero,
+                                                          icon: Align(
+                                                            alignment:
+                                                            AlignmentDirectional.topEnd,
+                                                            child: IconButton(
+                                                                onPressed: () {
+                                                                  Get.back();
+                                                                },
+                                                                icon: Icon(
+                                                                  Icons.cancel_outlined,
+                                                                  color: AppColors.kFFFFFF,
+                                                                )),
+                                                          ),
+                                                          content: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            children: [
+                                                              TextFormFieldCommon(
+                                                                hintText: 'folder_name'.tr,
+                                                                controller: controller
+                                                                    .folderNameController,
+                                                              ),
+                                                              size.heightSpace(15),
+                                                              GestureDetector(
+                                                                onTap: () async {
+                                                                  String newName = controller
+                                                                      .folderNameController.text;
+                                                                  if (newName.isNotEmpty) {
+                                                                    controller
+                                                                        .pinFolderList[index]
+                                                                        .name = newName;
+                                                                    await localStorage.write(
+                                                                        'folderList',
+                                                                        controller.pinFolderList.map((e) =>
+                                                                            e.toJson())
+                                                                            .toList());
+                                                                    controller.update();
+                                                                    Get.find<
+                                                                        DashBoardController>()
+                                                                        .update();
+                                                                  }
+                                                                  Get.back();
+                                                                },
+                                                                child: Container(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      vertical: 10,
+                                                                      horizontal: 35),
+                                                                  decoration: BoxDecoration(
+                                                                    color: AppColors.k68D9A3,
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        5),
+                                                                  ),
+                                                                  child: Text(
+                                                                    'Edit Folder Name',
+                                                                    style: AppTextStyle
+                                                                        .semiBoldSmallText
+                                                                        .copyWith(
+                                                                        color: AppColors
+                                                                            .k242424),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            size.heightSpace(10),
+                                            Text(
+                                              "${controller.pinFolderList[index].name}",
+                                              style: AppTextStyle
+                                                  .boldRegularText
+                                                  .copyWith(
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 14),
-                                      ),
-                                      Text(
-                                        'Created on 24-12-2023 (11:45:09) ',
-                                        style: AppTextStyle.mediumRegularText
-                                            .copyWith(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Text(
+                                              "${controller.pinFolderList[index].createdAt}",
+                                              style: AppTextStyle
+                                                  .mediumRegularText
+                                                  .copyWith(
                                                 fontWeight: FontWeight.w300,
-                                                fontSize: 10),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                size.heightSpace(15),
+                                GridView.builder(
+                                  itemCount: controller.folderList.length,
+                                  controller: controller.scrollController,
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 15,
+                                          crossAxisSpacing: 15),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        controller.selectedIndex = index;
+                                        controller.update();
+                                        Get.toNamed("/SpaceItem");
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: AppColors.k3D3D3D),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    AppImagePath.folderImg),
+                                                PopUpButtonCommon(
+                                                  onSelected: (value) {
+                                                    controller
+                                                            .popUpMenuInitialValue =
+                                                        value;
+                                                    controller.update();
+                                                  },
+                                                  deleteOnTap: () async {
+                                                    controller.folderList.removeAt(index);
+                                                    await localStorage.write('folderList', controller.folderList.map((e) => e.toJson()).toList());
+                                                  },
+                                                  pinOnTap: () async {
+                                                    controller.pinFolderList
+                                                        .add(controller
+                                                                .folderList[
+                                                            index]);
+                                                    await localStorage.write(
+                                                        'pinFolderList',
+                                                        controller.pinFolderList
+                                                            .map((e) =>
+                                                                e.toJson())
+                                                            .toList());
+                                                    controller.folderList
+                                                        .removeAt(index);
+                                                    await localStorage.write('folderList', controller.folderList.map((e) => e.toJson()).toList());
+                                                    controller.update();
+                                                  },
+                                                  editOnTap: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          backgroundColor: AppColors.k3D3D3D,
+                                                          contentPadding: EdgeInsets.only(
+                                                              top: 0,
+                                                              left: 20,
+                                                              right: 20,
+                                                              bottom: 23),
+                                                          iconPadding: EdgeInsets.zero,
+                                                          icon: Align(
+                                                            alignment:
+                                                            AlignmentDirectional.topEnd,
+                                                            child: IconButton(
+                                                                onPressed: () {
+                                                                  Get.back();
+                                                                },
+                                                                icon: Icon(
+                                                                  Icons.cancel_outlined,
+                                                                  color: AppColors.kFFFFFF,
+                                                                )),
+                                                          ),
+                                                          content: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            children: [
+                                                              TextFormFieldCommon(
+                                                                hintText: 'folder_name'.tr,
+                                                                controller: controller
+                                                                    .folderNameController,
+                                                              ),
+                                                              size.heightSpace(15),
+                                                              GestureDetector(
+                                                                onTap: () async {
+                                                                  String newName = controller
+                                                                      .folderNameController.text;
+                                                                  if (newName.isNotEmpty) {
+                                                                    controller
+                                                                        .folderList[index]
+                                                                        .name = newName;
+                                                                    await localStorage.write(
+                                                                        'folderList',
+                                                                        controller.folderList
+                                                                            .map((e) =>
+                                                                            e.toJson())
+                                                                            .toList());
+                                                                    controller.update();
+                                                                    Get.find<
+                                                                        DashBoardController>()
+                                                                        .update();
+                                                                  }
+                                                                  Get.back();
+                                                                },
+                                                                child: Container(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      vertical: 10,
+                                                                      horizontal: 35),
+                                                                  decoration: BoxDecoration(
+                                                                    color: AppColors.k68D9A3,
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        5),
+                                                                  ),
+                                                                  child: Text(
+                                                                    'Edit Folder Name',
+                                                                    style: AppTextStyle
+                                                                        .semiBoldSmallText
+                                                                        .copyWith(
+                                                                        color: AppColors
+                                                                            .k242424),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            size.heightSpace(10),
+                                            Text(
+                                              "${controller.folderList[index].name}",
+                                              style: AppTextStyle
+                                                  .boldRegularText
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Text(
+                                              "${controller.folderList[index].createdAt}",
+                                              style: AppTextStyle
+                                                  .mediumRegularText
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                   )

@@ -22,7 +22,8 @@ class MySpaceController extends GetxController {
   final picker = ImagePicker();
   FilePickerResult? result;
 
-  List<DocModel>? folderList;
+  List<DocModel> folderList = [];
+  List<DocModel> pinFolderList = [];
 
   String? popUpMenuInitialValue;
   String? title;
@@ -62,17 +63,20 @@ class MySpaceController extends GetxController {
       "name": folderNameController.text,
       "type": "folder",
       "files": [],
+      "isPinned": false,
       "createdAt": DateTime.now().toString(),
       "updatedAt": DateTime.now().toString()
     };
 
     DocModel data2 = DocModel.fromJson(data);
 
-    folderList?.add(data2);
+    folderList.add(data2);
 
     await localStorage.write('folderList',
-        folderList?.map((folderInfo) => folderInfo.toJson()).toList());
+        folderList.map((folderInfo) => folderInfo.toJson()).toList());
+
     update();
+    folderNameController.clear();
     Get.back();
     kDebugPrint("======Folder created successfully");
   }
@@ -92,10 +96,10 @@ class MySpaceController extends GetxController {
 
       Files jsonData = Files.fromJson(imageData);
 
-      folderList?[selectedIndex].files?.add(jsonData);
+      folderList[selectedIndex].files?.add(jsonData);
 
       await localStorage.write('folderList',
-          folderList?.map((folderInfo) => folderInfo.toJson()).toList());
+          folderList.map((folderInfo) => folderInfo.toJson()).toList());
     } else {
       kDebugPrint('No image selected');
     }
@@ -118,9 +122,9 @@ class MySpaceController extends GetxController {
 
       Files fileData = Files.fromJson(uploadData);
 
-      folderList?[selectedIndex].files?.add(fileData);
+      folderList[selectedIndex].files?.add(fileData);
       await localStorage.write(
-          'folderList', folderList?.map((e) => e.toJson()).toList());
+          'folderList', folderList.map((e) => e.toJson()).toList());
     } else {
       kDebugPrint('No image selected');
     }
@@ -140,9 +144,33 @@ class MySpaceController extends GetxController {
       };
 
       Files fileData = Files.fromJson(uploadData);
-      folderList?[selectedIndex].files?.add(fileData);
+      folderList[selectedIndex].files?.add(fileData);
       await localStorage.write(
-          'folderList', folderList?.map((e) => e.toJson()).toList());
+          'folderList', folderList.map((e) => e.toJson()).toList());
+    } else {
+      kDebugPrint("----> No file selected");
+    }
+    update();
+  }
+
+  void spaceScreenPickFiles() async {
+    result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File("${result?.files.single.path}");
+
+      Map<String, dynamic> data = {
+        "name": result?.files.single.name,
+        "type": "file",
+        "path": file.path,
+        "isPinned": false,
+        "createdAt": DateTime.now().toString(),
+        "updatedAt": DateTime.now().toString()
+      };
+
+      DocModel fileData = DocModel.fromJson(data);
+      folderList.add(fileData);
+      await localStorage.write('folderList', folderList.map((e) => e.toJson()).toList());
     } else {
       kDebugPrint("----> No file selected");
     }

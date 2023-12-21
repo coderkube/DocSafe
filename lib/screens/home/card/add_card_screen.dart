@@ -61,7 +61,7 @@ class AddCardScreen extends StatelessWidget {
                             keyboardType: TextInputType.number,
                             onChanged: (input) {
                               if (input.length == 2 && !input.contains('/')) {
-                                controller.expiryDateController.text = input + "/";
+                                controller.expiryDateController.text = "$input/";
                                 controller.expiryDateController.selection = TextSelection.fromPosition(
                                   TextPosition(offset: controller.expiryDateController.text.length),
                                 );
@@ -95,9 +95,7 @@ class AddCardScreen extends StatelessWidget {
                   showBackView: false,
                   isChipVisible: false,padding: 10,isHolderNameVisible: true,
                   cardBgColor: AppColors.kB370DD,
-                  onCreditCardWidgetChange: (CreditCardBrand brand) {
-
-                  }, // Callback for anytime credit card brand is changed
+                  onCreditCardWidgetChange: (CreditCardBrand brand) {}, // Callback for anytime credit card brand is changed
                 ),
               ],
             ),

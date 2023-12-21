@@ -31,62 +31,6 @@ class SpaceItemScreen extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       controller.pickFiles();
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (BuildContext context) {
-                      //     return Container(
-                      //       decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //       ),
-                      //       child: AlertDialog(
-                      //         backgroundColor: AppColors.k3D3D3D,
-                      //         contentPadding: const EdgeInsets.only(
-                      //             top: 0, left: 20, right: 20, bottom: 23),
-                      //         iconPadding: EdgeInsets.zero,
-                      //         icon: Align(
-                      //           alignment: AlignmentDirectional.topEnd,
-                      //           child: IconButton(
-                      //               onPressed: () {
-                      //                 Get.back();
-                      //               },
-                      //               icon: const Icon(
-                      //                 Icons.cancel_outlined,
-                      //                 color: AppColors.kFFFFFF,
-                      //               )),
-                      //         ),
-                      //         content: Column(
-                      //           mainAxisSize: MainAxisSize.min,
-                      //           children: [
-                      //             TextFormFieldCommon(
-                      //               hintText: 'folder_name'.tr,
-                      //               controller: controller.folderNameController,
-                      //             ),
-                      //             size.heightSpace(15),
-                      //             GestureDetector(
-                      //               onTap: () {
-                      //                 // controller.createFolder();
-                      //                 // controller.folderNameController.clear();
-                      //               },
-                      //               child: Container(
-                      //                 padding: const EdgeInsets.symmetric(
-                      //                     vertical: 10, horizontal: 35),
-                      //                 decoration: BoxDecoration(
-                      //                   color: AppColors.k68D9A3,
-                      //                   borderRadius: BorderRadius.circular(5),
-                      //                 ),
-                      //                 child: Text(
-                      //                   'create_folder'.tr,
-                      //                   style: AppTextStyle.semiBoldSmallText
-                      //                       .copyWith(color: AppColors.k242424),
-                      //                 ),
-                      //               ),
-                      //             )
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     );
-                      //   },
-                      // );
                     },
                     child: SvgPicture.asset(
                       AppImagePath.newFolderImg,
@@ -97,49 +41,72 @@ class SpaceItemScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: GestureDetector(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              actionsAlignment: MainAxisAlignment.spaceAround,
-                              backgroundColor: AppColors.k3D3D3D,
-                              actions: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.back();
-                                    controller.pickImageInGallery();
-                                  },
-                                  child: const Text(
-                                    "Gallery",
-                                    style: TextStyle(
-                                        color: AppColors.kFFFFFF,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 25),
-                                  ),
+                        showModalBottomSheet(
+                          backgroundColor: AppColors.k3D3D3D,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero
+                          ),
+                          context: context, builder: (context) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: size.height(20)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: (){
+                                            controller.pickImageInGallery();
+                                            Get.back();
+                                          },
+                                            child: Icon(Icons.photo, size: size.height(40), color: AppColors.k6167DE,)),
+                                        Text("Gallery",
+                                          style: TextStyle(
+                                              fontSize: size.height(20),
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.kFFFFFF
+                                          ),)
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            controller.pickImageInCamera();
+                                            Get.back();
+                                          },
+                                          child: Icon(
+                                              Icons.camera_alt_outlined,
+                                              size: size.height(40),
+                                              color: AppColors.k6167DE),
+                                        ),
+                                        Text("Camera",
+                                          style: TextStyle(
+                                              fontSize: size.height(20),
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.kFFFFFF
+                                          ),)
+                                      ],
+                                    )
+                                  ],
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.back();
-                                    controller.pickImageInCamera();
-                                  },
-                                  child: const Text("Camera",
-                                      style: TextStyle(
-                                          color: AppColors.kFFFFFF,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 25)),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                              ),
+                            ],
+                          );
+                        },);
                       },
                       child: SvgPicture.asset(AppImagePath.newFileImg)),
                 ),
               ],
             ),
             body: SingleChildScrollView(
-              child: controller
-                      .folderList![controller.selectedIndex].files!.isEmpty
+              child: (controller.folderList.isEmpty ||
+                  controller.selectedIndex < 0 ||
+                  controller.selectedIndex >= controller.folderList.length ||
+                  controller.folderList[controller.selectedIndex].files!.isEmpty)
                   ? Center(
                       child: SvgPicture.asset(
                         'assets/images/ic_empty_screen.svg',
@@ -154,15 +121,11 @@ class SpaceItemScreen extends StatelessWidget {
                           return size.heightSpace(5);
                         },
                         shrinkWrap: true,
-                        itemCount: controller
-                                .folderList?[controller.selectedIndex]
-                                .files
-                                ?.length ??
-                            0,
+                        itemCount: controller.folderList[controller.selectedIndex].files!.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             leading: controller
-                                        .folderList?[controller.selectedIndex]
+                                        .folderList[controller.selectedIndex]
                                         .files?[index]
                                         .mimeType ==
                                     'pdf'
@@ -173,7 +136,7 @@ class SpaceItemScreen extends StatelessWidget {
                                     color: AppColors.k676D75,
                                     size: size.height(30)),
                             onTap: () async {
-                              await OpenFile.open("${controller.folderList?[controller.selectedIndex].files?[index].path}");
+                              await OpenFile.open("${controller.folderList[controller.selectedIndex].files?[index].path}");
                               // Get.to(FullScreenImgScreen(
                               //   imageFile:
                               //       "${controller.folderList?[controller.selectedIndex].files?[index].base64}",
@@ -188,7 +151,7 @@ class SpaceItemScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "${controller.folderList?[controller.selectedIndex].files?[index].name}",
+                                        "${controller.folderList[controller.selectedIndex].files?[index].name}",
                                         overflow: TextOverflow.ellipsis,
                                         style: AppTextStyle.boldRegularText
                                             .copyWith(
@@ -197,7 +160,7 @@ class SpaceItemScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        '${controller.folderList?[controller.selectedIndex].createdAt}',
+                                        '${controller.folderList[controller.selectedIndex].createdAt}',
                                         style: AppTextStyle.mediumRegularText
                                             .copyWith(
                                           color: Colors.white,

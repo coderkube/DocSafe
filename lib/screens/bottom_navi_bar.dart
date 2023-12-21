@@ -52,9 +52,17 @@ class BottomNaviBar extends StatelessWidget {
                     onTap: () {
 
                       // localStorage.remove('folderList');
+                      // localStorage.remove('pinFolderList');
 
                       Get.find<MySpaceController>().folderList =
                           (localStorage.read('folderList') as List<dynamic>?)
+                              ?.map((e) => DocModel.fromJson(
+                              Map<String, dynamic>.from(e)))
+                              .toList() ??
+                              [];
+
+                      Get.find<MySpaceController>().pinFolderList =
+                          (localStorage.read('pinFolderList') as List<dynamic>?)
                               ?.map((e) => DocModel.fromJson(
                               Map<String, dynamic>.from(e)))
                               .toList() ??
@@ -87,10 +95,18 @@ class BottomNaviBar extends StatelessWidget {
                       controller.selectedIndex = 2;
                       controller.update();
 
-                      // localStorage.remove('folderList');
+                      // localStorage.remove('cardList');
+                      // localStorage.remove('pinCardList');
 
                       Get.find<CardController>().cardList =
                           (localStorage.read('cardList') as List<dynamic>?)
+                              ?.map((e) => CardModel.fromJson(
+                              Map<String, dynamic>.from(e)))
+                              .toList() ??
+                              [];
+
+                      Get.find<CardController>().pinCardList =
+                          (localStorage.read('pinCardList') as List<dynamic>?)
                               ?.map((e) => CardModel.fromJson(
                               Map<String, dynamic>.from(e)))
                               .toList() ??

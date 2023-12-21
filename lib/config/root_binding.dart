@@ -17,7 +17,7 @@ class RootBinding extends Bindings {
     Get.put(MySpaceController());
     Get.put(BottomNaviBarController());
     Get.put(SettingController());
-    Get.put(DashBoardController());
     Get.put(CardController());
+    Get.put(DashBoardController());
   }
 }
