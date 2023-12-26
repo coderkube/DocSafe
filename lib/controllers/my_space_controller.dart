@@ -60,7 +60,7 @@ class MySpaceController extends GetxController {
   }
 
   Future<void> createFolder() async {
-    getStoragePermission();
+    // getStoragePermission();
     Map<String, dynamic> data = {
       "name": folderNameController.text,
       "type": "folder",
