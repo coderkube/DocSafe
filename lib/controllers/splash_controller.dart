@@ -1,5 +1,5 @@
+import 'package:docsafe/main.dart';
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashController extends GetxController {
   @override
@@ -7,11 +7,16 @@ class SplashController extends GetxController {
     Future.delayed(
       const Duration(seconds: 5),
       () {
-        if (Supabase.instance.client.auth.currentSession?.user != null) {
+        if(localStorage.read('pin') != null){
           return Get.offNamed("/Pin");
         } else {
           return Get.offNamed("/OnBoarding");
         }
+        // if (Supabase.instance.client.auth.currentSession?.user != null) {
+        //   return Get.offNamed("/Pin");
+        // } else {
+        //   return Get.offNamed("/OnBoarding");
+        // }
       },
     );
     super.onInit();

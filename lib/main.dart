@@ -8,6 +8,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/routing.dart';
 
 final localStorage = GetStorage();
+String languageCode = localStorage.read('languageCode') ?? 'en';
+String countryCode = localStorage.read('countryCode') ?? 'US';
 
 void main() async {
   await Supabase.initialize(
@@ -26,9 +28,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: RootBinding(),
       translations: Localization(),
-      locale: Get.deviceLocale,
+      locale: Locale(languageCode, countryCode),
       debugShowCheckedModeBanner: false,
-      fallbackLocale: const Locale("hi", "IN"),
+      fallbackLocale: const Locale('en', 'US'),
       theme: ThemeData(fontFamily: "Barlow"),
       initialRoute: "/",
       getPages: appRouting(),

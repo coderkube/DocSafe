@@ -18,16 +18,15 @@ dependencies:
   dynamicutils:
   pinput:
   smooth_page_indicator:
-  supabase_flutter :
+  supabase_flutter:
   fluttertoast: ^8.2.2
   motion_toast:
-  flutter_credit_card: ^4.0.1
+  awesome_card: ^1.1.7
   get_storage:
   permission_handler: ^11.1.0
   path_provider:
   image_picker:
   file_picker:
-  syncfusion_flutter_pdfviewer: ^23.2.7
   open_file: ^3.3.2
   flutter_screen_lock: ^9.0.1
 

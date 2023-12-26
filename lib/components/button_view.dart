@@ -18,7 +18,7 @@ class ButtonViewCommon extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: size.height(17)),
         decoration: BoxDecoration(
-            color: Color(0xff6167DE), borderRadius: BorderRadius.circular(8)),
+            color: AppColors.k6167DE, borderRadius: BorderRadius.circular(8)),
         child: Text(
           text,
           textAlign: TextAlign.center,

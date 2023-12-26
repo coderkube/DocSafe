@@ -18,34 +18,39 @@ class CardController extends GetxController {
   List<CardModel> cardList = [];
   List<CardModel> pinCardList = [];
 
+  bool isCardFlip = true;
+
   int selectedIndex = 0;
 
   Future<void> createCard() async {
-    Map<String, dynamic> data = {
-      "cardHolderName": cardHolderNameController.text,
-      "cardNumber": cardNumberController.text,
-      "expiryDate": expiryDateController.text,
-      "securityCode": securityCodeController.text,
-      "createdAt": DateTime.now().toString(),
-      "updatedAt": DateTime.now().toString()
-    };
+    if(formKey.currentState!.validate()){
+      Map<String, dynamic> data = {
+        "cardHolderName": cardHolderNameController.text,
+        "cardNumber": cardNumberController.text,
+        "expiryDate": expiryDateController.text,
+        "securityCode": securityCodeController.text,
+        "createdAt": DateTime.now().toString(),
+        "updatedAt": DateTime.now().toString()
+      };
 
-    CardModel cardData = CardModel.fromJson(data);
-    kDebugPrint("cardData======${cardData.cardHolderName}");
+      CardModel cardData = CardModel.fromJson(data);
+      kDebugPrint("cardData======${cardData.cardHolderName}");
 
-    cardList.add(cardData);
-    kDebugPrint("CardList-----$cardList");
+      cardList.add(cardData);
+      kDebugPrint("CardList-----$cardList");
 
-    await localStorage.write('cardList',
-        cardList.map((cardInfo) => cardInfo.toJson()).toList());
+      await localStorage.write('cardList',
+          cardList.map((cardInfo) => cardInfo.toJson()).toList());
 
-    cardHolderNameController.clear();
-    cardNumberController.clear();
-    expiryDateController.clear();
-    securityCodeController.clear();
-    update();
-    Get.find<DashBoardController>().update();
-    Get.back();
-    kDebugPrint("======Card created successfully");
+      cardHolderNameController.clear();
+      cardNumberController.clear();
+      expiryDateController.clear();
+      securityCodeController.clear();
+
+      update();
+      Get.find<DashBoardController>().update();
+      Get.back();
+      kDebugPrint("======Card created successfully");
+    }
   }
 }

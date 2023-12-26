@@ -112,7 +112,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 children: [
                   size.heightSpace(40),
                   GestureDetector(
-                    onTap: () => Get.offNamed("/Welcome"),
+                    onTap: () => Get.offNamed("/PinSet"),
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: size.height(15)),
                       width: size.width(220),

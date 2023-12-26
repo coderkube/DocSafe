@@ -23,9 +23,7 @@
         <option name="modules">
           <set>
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/app_links-3.4.5/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/device_info_plus-9.1.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/file_picker-6.1.1/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_credit_card-4.0.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.17/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/fluttertoast-8.2.4/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/image_picker_android-0.8.8+2/android" />
@@ -35,7 +33,6 @@
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/sign_in_with_apple-5.0.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/smart_auth-1.1.1/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/syncfusion_flutter_pdfviewer-23.2.7/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/url_launcher_android-6.2.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/webview_flutter_android-3.12.1/android" />
             <option value="$USER_HOME$/Documents/flutter/packages/flutter_tools/gradle" />

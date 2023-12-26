@@ -18,4 +18,5 @@ class AppImagePath {
   static const naviBarFileImg = "assets/icons/naviBar_file.svg";
   static const groupImg = "assets/icons/group.svg";
   static const settingImg = "assets/icons/setting.svg";
+  static const pdfImg = "assets/icons/pdf.svg";
 }

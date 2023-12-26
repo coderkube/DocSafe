@@ -6,6 +6,7 @@ class CardModel {
   String? createdAt;
   String? updatedAt;
   bool? isPinned;
+  bool? isCardFlip;
 
   CardModel(
       {cardHolderName,
@@ -14,7 +15,8 @@ class CardModel {
       securityCode,
       createdAt,
       updatedAt,
-      isPinned = false
+      isPinned = false,
+        isCardFlip = false,
       });
 
   CardModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class CardModel {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     isPinned = json['isPinned'];
+    isCardFlip = json['isCardFlip'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +39,7 @@ class CardModel {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['isPinned'] = isPinned;
+    data['isCardFlip'] = isCardFlip;
     return data;
   }
 }

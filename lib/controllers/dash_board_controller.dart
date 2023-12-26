@@ -19,6 +19,11 @@ class DashBoardController extends GetxController {
                 ?.map((e) => CardModel.fromJson(Map<String, dynamic>.from(e)))
                 .toList() ??
             [];
+
+    Get.find<MySpaceController>().update();
     super.onInit();
   }
+
+  bool isCardFlip = true;
+
 }

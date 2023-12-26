@@ -14,7 +14,9 @@ class PinSetScreen extends StatelessWidget {
         init: Get.find<AuthController>(),
         builder: (controller) {
           return Scaffold(
+            backgroundColor: AppColors.k23242E,
             body: ScreenLock.create(
+
               onConfirmed: (value) {
                 // controller.pinValue = value;
                 // controller.update();
@@ -38,6 +40,7 @@ class PinScreen extends StatelessWidget {
         init: Get.find<AuthController>(),
         builder: (controller) {
           return Scaffold(
+              backgroundColor: AppColors.k23242E,
               body: ScreenLock(
                   correctString: localStorage.read('pin'),
                   onUnlocked: () => Get.offNamed("/BottomBar")));

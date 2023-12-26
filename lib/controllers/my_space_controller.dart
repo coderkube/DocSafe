@@ -16,8 +16,10 @@ class MySpaceController extends GetxController {
 
   bool isListView = true;
   bool isTrue = true;
+  bool isPinList = false;
 
   int selectedIndex = 0;
+  int selectedPinFolderIndex = 0;
 
   final picker = ImagePicker();
   FilePickerResult? result;
@@ -58,7 +60,7 @@ class MySpaceController extends GetxController {
   }
 
   Future<void> createFolder() async {
-    await getStoragePermission();
+    getStoragePermission();
     Map<String, dynamic> data = {
       "name": folderNameController.text,
       "type": "folder",
@@ -96,10 +98,14 @@ class MySpaceController extends GetxController {
 
       Files jsonData = Files.fromJson(imageData);
 
+      isPinList ?
+      pinFolderList[selectedPinFolderIndex].files?.add(jsonData) :
       folderList[selectedIndex].files?.add(jsonData);
 
-      await localStorage.write('folderList',
-          folderList.map((folderInfo) => folderInfo.toJson()).toList());
+      isPinList ?
+      await localStorage.write('pinFolderList', pinFolderList.map((folderInfo) => folderInfo.toJson()).toList()) :
+      await localStorage.write('folderList', folderList.map((folderInfo) => folderInfo.toJson()).toList());
+
     } else {
       kDebugPrint('No image selected');
     }
@@ -122,9 +128,13 @@ class MySpaceController extends GetxController {
 
       Files fileData = Files.fromJson(uploadData);
 
+      isPinList ?
+      pinFolderList[selectedPinFolderIndex].files?.add(fileData) :
       folderList[selectedIndex].files?.add(fileData);
-      await localStorage.write(
-          'folderList', folderList.map((e) => e.toJson()).toList());
+
+      isPinList ?
+      await localStorage.write('pinFolderList', pinFolderList.map((folderInfo) => folderInfo.toJson()).toList()) :
+      await localStorage.write('folderList', folderList.map((folderInfo) => folderInfo.toJson()).toList());
     } else {
       kDebugPrint('No image selected');
     }
@@ -142,11 +152,16 @@ class MySpaceController extends GetxController {
         "path": file.path,
         "name": result?.files.single.name
       };
-
       Files fileData = Files.fromJson(uploadData);
+
+      isPinList ?
+      pinFolderList[selectedPinFolderIndex].files?.add(fileData) :
       folderList[selectedIndex].files?.add(fileData);
-      await localStorage.write(
-          'folderList', folderList.map((e) => e.toJson()).toList());
+
+      isPinList ?
+      await localStorage.write('pinFolderList', pinFolderList.map((folderInfo) => folderInfo.toJson()).toList()) :
+      await localStorage.write('folderList', folderList.map((folderInfo) => folderInfo.toJson()).toList());
+
     } else {
       kDebugPrint("----> No file selected");
     }

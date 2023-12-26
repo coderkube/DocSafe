@@ -98,11 +98,15 @@ class MySpaceScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
+                  highlightColor: Colors.transparent,
+                    splashFactory: NoSplash.splashFactory,
                     onTap: () async {
                       controller.spaceScreenPickFiles();
                 },child: SvgPicture.asset(AppImagePath.newFileImg)),
               ),
               InkWell(
+                highlightColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
                 onTap: () {
                   if (controller.isListView == true) {
                     controller.isListView = false;
@@ -142,7 +146,10 @@ class MySpaceScreen extends StatelessWidget {
                                   return ListTile(
                                     onTap: () async {
                                       if(controller.pinFolderList[index].type == 'folder'){
-                                        controller.selectedIndex = index;
+                                        controller.selectedPinFolderIndex = index;
+                                        controller.isPinList = true;
+                                        kDebugPrint("-Select Index--> ${controller.selectedPinFolderIndex}");
+                                        kDebugPrint("--Files-> ${controller.pinFolderList[index].files}");
                                         controller.update();
                                         Get.toNamed("/SpaceItem");
                                       } else {
@@ -155,11 +162,8 @@ class MySpaceScreen extends StatelessWidget {
                                     title: Row(
                                       children: [
                                         controller.pinFolderList[index].type == 'folder' ?
-                                        SvgPicture.asset(
-                                            AppImagePath.folderImg) :
-                                        Icon(Icons.picture_as_pdf_sharp,
-                                            color: AppColors.k676D75,
-                                            size: size.height(30)),
+                                        SvgPicture.asset(AppImagePath.folderImg) :
+                                        SvgPicture.asset(AppImagePath.pdfImg),
                                         size.widthSpace(10),
                                         Expanded(
                                           child: Column(
@@ -224,6 +228,7 @@ class MySpaceScreen extends StatelessWidget {
                                                 .toList());
                                       },
                                       editOnTap: () {
+                                        controller.folderNameController.text = controller.pinFolderList[index].name!;
                                         showDialog(
                                           context: context,
                                           builder: (context) {
@@ -319,6 +324,7 @@ class MySpaceScreen extends StatelessWidget {
                                     onTap: () async {
                                       if(controller.folderList[index].type == 'folder'){
                                         controller.selectedIndex = index;
+                                        controller.isPinList = false;
                                         controller.update();
                                         Get.toNamed("/SpaceItem");
                                       } else {
@@ -365,27 +371,16 @@ class MySpaceScreen extends StatelessWidget {
                                     ),
                                     trailing: PopUpButtonCommon(
                                       onSelected: (value) {
-                                        controller.popUpMenuInitialValue =
-                                            value;
+                                        controller.popUpMenuInitialValue = value;
                                         controller.update();
                                       },
                                       pinOnTap: () async {
-                                        controller.pinFolderList
-                                            .add(controller.folderList[index]);
-                                        await localStorage.write(
-                                            'pinFolderList',
-                                            controller.pinFolderList
-                                                .map((e) => e.toJson())
-                                                .toList());
+                                        controller.pinFolderList.add(controller.folderList[index]);
+                                        await localStorage.write('pinFolderList', controller.pinFolderList.map((e) => e.toJson()).toList());
                                         controller.folderList.removeAt(index);
-                                        await localStorage.write(
-                                            'folderList',
-                                            controller.folderList
-                                                .map((e) => e.toJson())
-                                                .toList());
+                                        await localStorage.write('folderList', controller.folderList.map((e) => e.toJson()).toList());
                                         controller.update();
-                                        Get.find<DashBoardController>()
-                                            .update();
+                                        Get.find<DashBoardController>().update();
                                       },
                                       deleteOnTap: () async {
                                         controller.folderList.removeAt(index);
@@ -396,6 +391,7 @@ class MySpaceScreen extends StatelessWidget {
                                                 .toList());
                                       },
                                       editOnTap: () {
+                                        controller.folderNameController.text = controller.folderList[index].name!;
                                         showDialog(
                                           context: context,
                                           builder: (context) {
@@ -493,13 +489,19 @@ class MySpaceScreen extends StatelessWidget {
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
                                           mainAxisSpacing: 15,
+                                          mainAxisExtent: 115,
                                           crossAxisSpacing: 15),
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () {
-                                        controller.selectedIndex = index;
+                                      onTap: () async {
+                                        if(controller.pinFolderList[index].type == 'folder'){
+                                        controller.selectedPinFolderIndex = index;
+                                        controller.isPinList = true;
                                         controller.update();
                                         Get.toNamed("/SpaceItem");
+                                        } else {
+                                          await OpenFile.open("${controller.pinFolderList[index].path}");
+                                        }
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
@@ -508,16 +510,14 @@ class MySpaceScreen extends StatelessWidget {
                                                 BorderRadius.circular(5),
                                             color: AppColors.k3D3D3D),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                SvgPicture.asset(
-                                                    AppImagePath.folderImg),
+                                        controller.pinFolderList[index].type == 'folder' ?
+                                        SvgPicture.asset(AppImagePath.folderImg) :
+                                          SvgPicture.asset(AppImagePath.pdfImg),
                                                 Icon(Icons.push_pin,
                                                     size: size.height(17),
                                                     color: AppColors.k68D9A3),
@@ -543,6 +543,7 @@ class MySpaceScreen extends StatelessWidget {
                                                     controller.update();
                                                   },
                                                   editOnTap: () {
+                                                    controller.folderNameController.text = controller.pinFolderList[index].name!;
                                                     showDialog(
                                                       context: context,
                                                       builder: (context) {
@@ -658,13 +659,19 @@ class MySpaceScreen extends StatelessWidget {
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
                                           mainAxisSpacing: 15,
+                                          mainAxisExtent: 115,
                                           crossAxisSpacing: 15),
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () {
+                                      onTap: () async {
+                                        if(controller.folderList[index].type == 'folder'){
                                         controller.selectedIndex = index;
+                                        controller.isPinList = false;
                                         controller.update();
                                         Get.toNamed("/SpaceItem");
+                                        } else {
+                                          await OpenFile.open("${controller.folderList[index].path}");
+                                        }
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
@@ -681,8 +688,10 @@ class MySpaceScreen extends StatelessWidget {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
+                                                controller.folderList[index].type == 'folder' ?
                                                 SvgPicture.asset(
-                                                    AppImagePath.folderImg),
+                                                    AppImagePath.folderImg) :
+                                                SvgPicture.asset(AppImagePath.pdfImg, height: size.height(30)),
                                                 PopUpButtonCommon(
                                                   onSelected: (value) {
                                                     controller
@@ -695,10 +704,7 @@ class MySpaceScreen extends StatelessWidget {
                                                     await localStorage.write('folderList', controller.folderList.map((e) => e.toJson()).toList());
                                                   },
                                                   pinOnTap: () async {
-                                                    controller.pinFolderList
-                                                        .add(controller
-                                                                .folderList[
-                                                            index]);
+                                                    controller.pinFolderList.add(controller.folderList[index]);
                                                     await localStorage.write(
                                                         'pinFolderList',
                                                         controller.pinFolderList
@@ -711,6 +717,7 @@ class MySpaceScreen extends StatelessWidget {
                                                     controller.update();
                                                   },
                                                   editOnTap: () {
+                                                    controller.folderNameController.text = controller.folderList[index].name!;
                                                     showDialog(
                                                       context: context,
                                                       builder: (context) {

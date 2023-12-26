@@ -1,12 +1,11 @@
+import 'package:awesome_card/awesome_card.dart';
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/config/image_path.dart';
 import 'package:docsafe/config/text_style.dart';
 import 'package:docsafe/controllers/add_card_controller.dart';
 import 'package:docsafe/controllers/dash_board_controller.dart';
 import 'package:docsafe/controllers/my_space_controller.dart';
-import 'package:docsafe/screens/home/card/add_card_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
@@ -30,7 +29,7 @@ class DashBoardScreen extends StatelessWidget {
                         .copyWith(fontSize: size.height(22)),
                     children: [
                       TextSpan(
-                          text: "Admin !",
+                          text: "there".tr,
                           style: AppTextStyle.semiBoldLargeText
                               .copyWith(color: AppColors.k6167DE))
                     ])),
@@ -52,6 +51,8 @@ class DashBoardScreen extends StatelessWidget {
                       style: AppTextStyle.semiBoldMediumRegularText,
                     ),
                     InkWell(
+                      highlightColor: Colors.transparent,
+                      splashFactory: NoSplash.splashFactory,
                       onTap: () {
                         Get.toNamed("/Card");
                       },
@@ -76,35 +77,34 @@ class DashBoardScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: Get.find<CardController>().pinCardList.length,
                     itemBuilder: (context, index) {
-                      return CreditCardWidget(
-                        height: size.height(181),
-                        width: size.width(284),
-                        padding: size.height(8),
-                        frontCardBorder: Border.all(
-                            color: AppColors.kF2F2F2.withOpacity(0.20), width: 1),
-                        backCardBorder: Border.all(
-                            color: AppColors.kF2F2F2.withOpacity(0.20), width: 1),
-                        cardNumber: "${Get.find<CardController>().pinCardList[index].cardNumber}",
-                        expiryDate: "${Get.find<CardController>().pinCardList[index].expiryDate}",
-                        cardHolderName: "${Get.find<CardController>().pinCardList[index].cardHolderName}",
-                        isHolderNameVisible: true,
-                        cvvCode: "${Get.find<CardController>().pinCardList[index].expiryDate}",
-                        showBackView: true,
-                        backgroundImage: AppImagePath.cardImg,
-                        cardBgColor: AppColors.k001421,
-                        cardType: CardType.mastercard,
-                        chipColor: AppColors.kd99238,
-                        enableFloatingCard: true,
-                        obscureCardCvv: false,
-                        obscureCardNumber: false,
-                        onCreditCardWidgetChange: (value) {},
+                      return Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              controller.isCardFlip = !controller.isCardFlip;
+                              controller.update();
+                            },
+                            child: CreditCard(
+                              height: size.height(200),
+                                width: size.width(300),
+                                cardNumber: "${Get.find<CardController>().pinCardList[index].cardNumber}",
+                                cardExpiry: "${Get.find<CardController>().pinCardList[index].expiryDate}",
+                                cardHolderName: "${Get.find<CardController>().pinCardList[index].cardHolderName}",
+                                cvv: "${Get.find<CardController>().pinCardList[index].securityCode}",
+                                showBackSide: controller.isCardFlip,
+                                frontBackground: CardBackgrounds.custom(0XFF001421),
+                                backBackground: CardBackgrounds.custom(0XFF001421),
+                              backTextColor: AppColors.kFFFFFF,
+                            ),
+                          ),
+                        ],
                       );
                     },) :
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Their is no Pinned Cards Yet.", style: AppTextStyle.normalRegularText),
+                      Text("you_do_not_have_a_PIN_card_yet.".tr, style: AppTextStyle.normalRegularText),
                       size.heightSpace(40),
                       InkWell(
                         highlightColor: Colors.transparent,
@@ -129,93 +129,6 @@ class DashBoardScreen extends StatelessWidget {
                   )
                 ),
                 size.heightSpace(10),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     InkWell(
-                //       highlightColor: Colors.transparent,
-                //       splashFactory: NoSplash.splashFactory,
-                //       onTap: () {
-                //
-                //       },
-                //       child: Container(
-                //         padding: EdgeInsets.all(size.height(3)),
-                //         decoration: const BoxDecoration(
-                //             color: AppColors.k68D9A3, shape: BoxShape.circle),
-                //         child: const Icon(Icons.arrow_back),
-                //       ),
-                //     ),
-                //     size.widthSpace(20),
-                //     Container(
-                //       padding: EdgeInsets.all(size.height(3)),
-                //       decoration: BoxDecoration(
-                //           color: AppColors.k68D9A3,
-                //           shape: BoxShape.circle,
-                //           border: Border.all(
-                //               width: 1,
-                //               color: AppColors.kF2F2F2.withOpacity(0.25))),
-                //       child: const Icon(Icons.arrow_forward),
-                //     )
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     InkWell(
-                //       highlightColor: Colors.transparent,
-                //       splashFactory: NoSplash.splashFactory,
-                //       onTap: () {
-                //
-                //       },
-                //       child: Container(
-                //         padding: EdgeInsets.all(size.height(10)),
-                //         decoration: BoxDecoration(
-                //             color: currentPage == 0
-                //                 ? AppColor.whiteColor
-                //                 : AppColor.k00A3ADColor,
-                //             shape: BoxShape.circle,
-                //             border: Border.all(
-                //                 width: 1,
-                //                 color: currentPage == 0
-                //                     ? AppColor.k828A9DColor
-                //                     : AppColor.k00A3ADColor)),
-                //         child: SvgPicture.asset(
-                //           ImagePath.leftArrowIcon,
-                //           color: currentPage == 0
-                //               ? AppColor.k828A9DColor
-                //               : AppColor.whiteColor,
-                //         ),
-                //       ),
-                //     ),
-                //     size.widthSpace(22),
-                //     InkWell(
-                //       highlightColor: Colors.transparent,
-                //       splashFactory: NoSplash.splashFactory,
-                //       onTap: rightButtonOnTap,
-                //       child: Container(
-                //         padding: EdgeInsets.all(size.height(10)),
-                //         decoration: BoxDecoration(
-                //             color: currentPage == 2
-                //                 ? AppColor.whiteColor
-                //                 : AppColor.k00A3ADColor,
-                //             shape: BoxShape.circle,
-                //             border: Border.all(
-                //                 width: 1,
-                //                 color: currentPage == 2
-                //                     ? AppColor.k828A9DColor
-                //                     : AppColor.k00A3ADColor)),
-                //         child: Transform.rotate(
-                //           angle: 3.15,
-                //           child: SvgPicture.asset(ImagePath.leftArrowIcon,
-                //               color: currentPage == 2
-                //                   ? AppColor.k828A9DColor
-                //                   : AppColor.whiteColor),
-                //         ),
-                //       ),
-                //     )
-                //   ],
-                // ),
-                size.heightSpace(25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -224,6 +137,8 @@ class DashBoardScreen extends StatelessWidget {
                       style: AppTextStyle.semiBoldMediumRegularText,
                     ),
                     InkWell(
+                      highlightColor: Colors.transparent,
+                      splashFactory: NoSplash.splashFactory,
                       onTap: () => Get.toNamed("/MySpace"),
                       child: Container(
                         padding: EdgeInsets.symmetric(
@@ -249,11 +164,13 @@ class DashBoardScreen extends StatelessWidget {
                       return Column(
                         children: [
                           InkWell(
+                            highlightColor: Colors.transparent,
+                              splashFactory: NoSplash.splashFactory,
                               onTap: () async {
                                 if(Get.find<MySpaceController>().pinFolderList[index].type == 'folder'){
-                                  // Get.find<MySpaceController>().selectedIndex = index;
+                                  Get.find<MySpaceController>().selectedPinFolderIndex = index;
+                                  Get.find<MySpaceController>().isPinList = true;
                                   Get.find<MySpaceController>().update();
-                                  controller.update();
                                   Get.toNamed("/SpaceItem");
                                 } else {
                                   await OpenFile.open("${Get.find<MySpaceController>().pinFolderList[index].path}");
@@ -261,9 +178,7 @@ class DashBoardScreen extends StatelessWidget {
                               },
                               child: Get.find<MySpaceController>().pinFolderList[index].type == "folder" ?
                               SvgPicture.asset(AppImagePath.fileImg) :
-                              Icon(Icons.picture_as_pdf_sharp,
-                              color: AppColors.k676D75,
-                              size: size.height(58))),
+                              SvgPicture.asset(AppImagePath.pdfImg, height: size.height(58))),
                           size.heightSpace(10),
                           Text("${Get.find<MySpaceController>().pinFolderList[index].name}",
                               overflow: TextOverflow.ellipsis,
@@ -276,14 +191,14 @@ class DashBoardScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Their is no Pinned Document", style: AppTextStyle.normalRegularText),
+                      Text("you_don't_have_any_pinned_documents".tr, style: AppTextStyle.normalRegularText),
                       size.heightSpace(40),
                       InkWell(
                         highlightColor: Colors.transparent,
-                        splashFactory: NoSplash.splashFactory,
                         onTap: () {
                           Get.toNamed("/MySpace");
                         },
+                        splashFactory: NoSplash.splashFactory,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 73),
@@ -291,7 +206,7 @@ class DashBoardScreen extends StatelessWidget {
                               color: AppColors.k6167DE,
                               borderRadius: BorderRadius.circular(100)),
                           child: Text(
-                            'Add Pin Document',
+                            'add_pin_document'.tr,
                             style: AppTextStyle.semiBoldMediumRegularText
                                 .copyWith(color: AppColors.kFFFFFF),
                           ),

@@ -80,7 +80,7 @@ class AuthController extends GetxController {
     isLoading = true;
     update();
     try {
-      final response = await Supabase.instance.client.auth.signInWithPassword(
+      await Supabase.instance.client.auth.signInWithPassword(
           email: signInEmailController.text,
           password: signInPasswordController.text);
 
