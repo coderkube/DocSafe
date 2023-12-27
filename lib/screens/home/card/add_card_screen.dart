@@ -49,10 +49,13 @@ class AddCardScreen extends StatelessWidget {
                               color: AppColors.k68D9A3,
                             )),
                       ),
-                      title: Text("scan_functionality_will_come_soon,\n_please_add_manually".tr, textAlign: TextAlign.center,),
+                      title: Text("The_scan_functionality_will_be_available_soon,_Please_add_the_card_manually.".tr, textAlign: TextAlign.center, style: AppTextStyle.normalRegularText,),
                     );
                   },);
-                },child: SvgPicture.asset('assets/images/ic_scan_card.svg')),
+                },child: Padding(
+                  padding: EdgeInsets.only(left: size.width(10)),
+                  child: SvgPicture.asset('assets/images/ic_scan_card.svg'),
+                )),
                   size.heightSpace(20),
                   Form(
                       key: controller.formKey,

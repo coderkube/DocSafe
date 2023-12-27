@@ -69,7 +69,7 @@ class Localization extends Translations {
       "language" : "Language",
       "enter_16_digits" : "Enter 16 Digits",
       "enter_3_digits" : "Enter 3 Digits",
-      "scan_functionality_will_come_soon,\n_please_add_manually" : "Scan Functionality Will Come Soon, Please Add Manually",
+      "The_scan_functionality_will_be_available_soon,_Please_add_the_card_manually." : "The scan functionality will be available soon, Please add the card manually.",
     },
 
     'hi_IN' : {
@@ -136,7 +136,7 @@ class Localization extends Translations {
       "enter_security_code" : "सुरक्षा कोड डालें",
       "enter_16_digits" : "16 अंक दर्ज करें",
       "enter_3_digits" : "3 अंक दर्ज करें",
-      "scan_functionality_will_come_soon,\n_please_add_manually" : "स्कैन कार्यक्षमता जल्द ही आएगी,\nकृपया मैन्युअल रूप से जोड़ें",
+      "The_scan_functionality_will_be_available_soon,_Please_add_the_card_manually." : "स्कैन कार्यक्षमता जल्द ही उपलब्ध होगी,\nकृपया कार्ड को मैन्युअल रूप से जोड़ें।ं",
       "language" : "भाषां",
     },
   };
