@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/main.dart';
@@ -6,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MySpaceController extends GetxController {
@@ -89,10 +91,16 @@ class MySpaceController extends GetxController {
 
     if (pickedFile != null) {
       File image = File(pickedFile.path);
+      List<int> fileBytes = await image.readAsBytes();
+      String base64String = base64Encode(fileBytes);
+      List<int> fileDecode = base64Decode(base64String);
+
+      final directory = Platform.isAndroid ? await getDownloadsDirectory() : await getApplicationDocumentsDirectory();
+      File imageFile = await File("${directory?.path}/${pickedFile.name}").writeAsBytes(fileDecode);
 
       Map<String, dynamic> imageData = {
         "mimeType": pickedFile.mimeType,
-        "path": image.path,
+        "path": imageFile.path,
         "name": pickedFile.name
       };
 
@@ -119,10 +127,16 @@ class MySpaceController extends GetxController {
 
     if (pickedFile != null) {
       File image = File(pickedFile.path);
+      List<int> fileBytes = await image.readAsBytes();
+      String base64String = base64Encode(fileBytes);
+      List<int> fileDecode = base64Decode(base64String);
+
+      final directory = Platform.isAndroid ? await getDownloadsDirectory() : await getApplicationDocumentsDirectory();
+      File imageFile = await File("${directory?.path}/${pickedFile.name}").writeAsBytes(fileDecode);
 
       Map<String, dynamic> uploadData = {
         "mimeType": pickedFile.mimeType,
-        "path": image.path,
+        "path": imageFile.path,
         "name": pickedFile.name
       };
 
@@ -146,10 +160,16 @@ class MySpaceController extends GetxController {
 
     if (result != null) {
       File file = File("${result?.files.single.path}");
+      List<int> fileBytes = await file.readAsBytes();
+      String base64String = base64Encode(fileBytes);
+      List<int> fileDecode = base64Decode(base64String);
+
+      final directory = Platform.isAndroid ? await getDownloadsDirectory() : await getApplicationDocumentsDirectory();
+      File tempFile = await File("${directory?.path}/${result?.files.single.name}").writeAsBytes(fileDecode);
 
       Map<String, dynamic> uploadData = {
         "mimeType": result?.files.single.extension,
-        "path": file.path,
+        "path": tempFile.path,
         "name": result?.files.single.name
       };
       Files fileData = Files.fromJson(uploadData);
@@ -173,11 +193,18 @@ class MySpaceController extends GetxController {
 
     if (result != null) {
       File file = File("${result?.files.single.path}");
+      List<int> fileBytes = await file.readAsBytes();
+      String base64String = base64Encode(fileBytes);
+      List<int> fileDecode = base64Decode(base64String);
+
+      final directory = Platform.isAndroid ? await getDownloadsDirectory() : await getApplicationDocumentsDirectory();
+      File tempFile = await File("${directory?.path}/${result?.files.single.name}").writeAsBytes(fileDecode);
+      kDebugPrint("TempFile ==> ${tempFile.path}");
 
       Map<String, dynamic> data = {
         "name": result?.files.single.name,
         "type": "file",
-        "path": file.path,
+        "path": tempFile.path,
         "isPinned": false,
         "createdAt": DateTime.now().toString(),
         "updatedAt": DateTime.now().toString()

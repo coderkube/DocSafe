@@ -221,6 +221,7 @@ class SpaceItemScreen extends StatelessWidget {
                                               color: AppColors.k676D75,
                                               size: size.height(30)),
                                       onTap: () async {
+                                        kDebugPrint("Open Space Item ======>${controller.folderList[controller.selectedIndex].files?[index].path}");
                                         await OpenFile.open(
                                             "${controller.folderList[controller.selectedIndex].files?[index].path}");
                                       },

@@ -329,16 +329,14 @@ class MySpaceScreen extends StatelessWidget {
                                         Get.toNamed("/SpaceItem");
                                       } else {
                                         await OpenFile.open("${controller.folderList[index].path}");
+                                        kDebugPrint("---Click Event Path--- ${controller.folderList[index].path}");
                                       }
                                     },
                                     title: Row(
                                       children: [
                                         controller.folderList[index].type == 'folder' ?
-                                        SvgPicture.asset(
-                                            AppImagePath.folderImg) :
-                                        Icon(Icons.picture_as_pdf_sharp,
-                                            color: AppColors.k676D75,
-                                            size: size.height(30)),
+                                        SvgPicture.asset(AppImagePath.folderImg) :
+                                      SvgPicture.asset(AppImagePath.pdfImg),
                                         size.widthSpace(10),
                                         Expanded(
                                           child: Column(

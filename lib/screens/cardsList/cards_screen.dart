@@ -35,6 +35,10 @@ class CardsScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
+                    controller.cardHolderNameController.clear();
+                    controller.cardNumberController.clear();
+                    controller.expiryDateController.clear();
+                    controller.securityCodeController.clear();
                     Get.to(() => const AddCardScreen());
                   },
                   child: SvgPicture.asset(

@@ -173,12 +173,14 @@ class DashBoardScreen extends StatelessWidget {
                                   Get.find<MySpaceController>().update();
                                   Get.toNamed("/SpaceItem");
                                 } else {
+                                  print("Open File--->");
+                                  kDebugPrint("Open File--->---");
                                   await OpenFile.open("${Get.find<MySpaceController>().pinFolderList[index].path}");
                                 }
                               },
                               child: Get.find<MySpaceController>().pinFolderList[index].type == "folder" ?
                               SvgPicture.asset(AppImagePath.fileImg) :
-                              SvgPicture.asset(AppImagePath.pdfImg, height: size.height(58))),
+                              SvgPicture.asset(AppImagePath.pdfImg, height: size.height(55))),
                           size.heightSpace(10),
                           Text("${Get.find<MySpaceController>().pinFolderList[index].name}",
                               overflow: TextOverflow.ellipsis,
