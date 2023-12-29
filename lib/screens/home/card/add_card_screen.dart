@@ -1,6 +1,8 @@
-import 'package:awesome_card/awesome_card.dart';
+import 'package:docsafe/awsome_card/credit_card.dart';
+import 'package:docsafe/awsome_card/style/card_background.dart';
 import 'package:docsafe/components/textformfield.dart';
 import 'package:docsafe/config/color_file.dart';
+import 'package:docsafe/config/image_path.dart';
 import 'package:docsafe/config/text_style.dart';
 import 'package:docsafe/controllers/add_card_controller.dart';
 import 'package:flutter/material.dart';
@@ -33,29 +35,9 @@ class AddCardScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                     onTap: () {
-                  showDialog(context: context, builder: (context) {
-                    return AlertDialog(
-                      backgroundColor: AppColors.k3D3D3D,
-                      titleTextStyle: TextStyle(
-                        fontSize: size.height(25)
-                      ),
-                      iconPadding: EdgeInsets.zero,
-                      icon: Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                            onPressed: () => Get.back(),
-                            icon: const Icon(
-                              Icons.cancel_outlined,
-                              color: AppColors.k68D9A3,
-                            )),
-                      ),
-                      title: Text("The_scan_functionality_will_be_available_soon,_Please_add_the_card_manually.".tr, textAlign: TextAlign.center, style: AppTextStyle.normalRegularText,),
-                    );
-                  },);
-                },child: Padding(
-                  padding: EdgeInsets.only(left: size.width(10)),
-                  child: SvgPicture.asset('assets/images/ic_scan_card.svg'),
-                )),
+                      controller.cardScanner();
+                },child: Center(child: SvgPicture.asset(AppImagePath.cardScannerImg,width: size.width(350),))
+                ),
                   size.heightSpace(20),
                   Form(
                       key: controller.formKey,
@@ -96,14 +78,19 @@ class AddCardScreen extends StatelessWidget {
                       ),
                       size.heightSpace(20),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(child: TextFormFieldCommon(controller: controller.expiryDateController,
+                          Expanded(
+                              child: TextFormFieldCommon(
+                                controller: controller.expiryDateController,
                             hintText: 'expiry_date'.tr,
                             maxLength: 5,
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if(value.isEmpty){
                                 return "enter_expiry_date".tr;
+                              } else if(value.length != 5){
+                                return "Enter_Valid_Date".tr;
                               } else {
                                 return null;
                               }
@@ -161,16 +148,6 @@ class AddCardScreen extends StatelessWidget {
                       frontBackground: CardBackgrounds.custom(0XFFB370DD),
                       backBackground: CardBackgrounds.custom(0XFFB370DD)),
                 )
-                // CreditCardWidget(
-                //   cardNumber: controller.cardNumberController.text,
-                //   expiryDate: controller.expiryDateController.text,
-                //   cardHolderName: controller.cardHolderNameController.text,
-                //   cvvCode: controller.securityCodeController.text,
-                //   showBackView: false,
-                //   isChipVisible: false,padding: 10,isHolderNameVisible: true,
-                //   cardBgColor: AppColors.kB370DD,
-                //   onCreditCardWidgetChange: (CreditCardBrand brand) {}, // Callback for anytime credit card brand is changed
-                // ),
               ],
             ),
           ),

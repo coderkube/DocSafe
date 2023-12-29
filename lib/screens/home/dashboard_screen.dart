@@ -1,4 +1,5 @@
-import 'package:awesome_card/awesome_card.dart';
+import 'package:docsafe/awsome_card/credit_card.dart';
+import 'package:docsafe/awsome_card/style/card_background.dart';
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/config/image_path.dart';
 import 'package:docsafe/config/text_style.dart';
@@ -94,7 +95,7 @@ class DashBoardScreen extends StatelessWidget {
                                 showBackSide: controller.isCardFlip,
                                 frontBackground: CardBackgrounds.custom(0XFF001421),
                                 backBackground: CardBackgrounds.custom(0XFF001421),
-                              backTextColor: AppColors.kFFFFFF,
+                                backTextColor: AppColors.kFFFFFF,
                             ),
                           ),
                         ],
@@ -173,7 +174,6 @@ class DashBoardScreen extends StatelessWidget {
                                   Get.find<MySpaceController>().update();
                                   Get.toNamed("/SpaceItem");
                                 } else {
-                                  print("Open File--->");
                                   kDebugPrint("Open File--->---");
                                   await OpenFile.open("${Get.find<MySpaceController>().pinFolderList[index].path}");
                                 }

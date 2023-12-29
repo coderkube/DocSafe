@@ -21,7 +21,6 @@ dependencies:
   supabase_flutter:
   fluttertoast: ^8.2.2
   motion_toast:
-  awesome_card: ^1.1.7
   get_storage:
   permission_handler: ^11.1.0
   path_provider:
@@ -29,6 +28,8 @@ dependencies:
   file_picker:
   open_file: ^3.3.2
   flutter_screen_lock: ^9.0.1
+  screen_protector: ^1.4.2
+  credit_card_scanner: ^1.0.5
 
 dev_dependencies:
   flutter_test:

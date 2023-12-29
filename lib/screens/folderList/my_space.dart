@@ -836,6 +836,8 @@ class MySpaceScreen extends StatelessWidget {
                               'assets/images/ic_empty_screen.svg')),
                       size.heightSpace(40),
                       InkWell(
+                        highlightColor: Colors.transparent,
+                        splashFactory: NoSplash.splashFactory,
                         onTap: () {
                           showDialog(
                             context: context,

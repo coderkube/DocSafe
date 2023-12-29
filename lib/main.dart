@@ -4,6 +4,7 @@ import 'package:docsafe/config/supabase_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:screen_protector/screen_protector.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/routing.dart';
 
@@ -18,6 +19,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   runApp(const MyApp());
+  disableCapture();
+}
+
+disableCapture() async {
+  await ScreenProtector.protectDataLeakageOn();
 }
 
 class MyApp extends StatelessWidget {
@@ -25,15 +31,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      initialBinding: RootBinding(),
-      translations: Localization(),
-      locale: Locale(languageCode, countryCode),
-      debugShowCheckedModeBanner: false,
-      fallbackLocale: const Locale('en', 'US'),
-      theme: ThemeData(fontFamily: "Barlow"),
-      initialRoute: "/",
-      getPages: appRouting(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      child: GetMaterialApp(
+        initialBinding: RootBinding(),
+        translations: Localization(),
+        locale: Locale(languageCode, countryCode),
+        debugShowCheckedModeBanner: false,
+        fallbackLocale: const Locale('en', 'US'),
+        theme: ThemeData(fontFamily: "Barlow"),
+        initialRoute: "/",
+        getPages: appRouting(),
+      ),
     );
   }
 }

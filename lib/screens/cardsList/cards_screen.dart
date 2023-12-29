@@ -1,4 +1,5 @@
-import 'package:awesome_card/awesome_card.dart';
+import 'package:docsafe/awsome_card/credit_card.dart';
+import 'package:docsafe/awsome_card/style/card_background.dart';
 import 'package:docsafe/components/pop_up_menu.dart';
 import 'package:docsafe/components/textformfield.dart';
 import 'package:docsafe/config/color_file.dart';
@@ -280,7 +281,9 @@ class CardsScreen extends StatelessWidget {
                                 showBackSide: controller.cardList[index].isCardFlip!,
                                 backTextColor: AppColors.kFFFFFF,
                                 frontBackground: CardBackgrounds.custom(0XFFB370DD),
-                                backBackground: CardBackgrounds.custom(0XFFB370DD)),
+                                backBackground: CardBackgrounds.custom(0XFFB370DD),
+                              mask: "",
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: size.width(10)),

@@ -19,4 +19,5 @@ class AppImagePath {
   static const groupImg = "assets/icons/group.svg";
   static const settingImg = "assets/icons/setting.svg";
   static const pdfImg = "assets/icons/pdf.svg";
+  static const cardScannerImg = "assets/images/card_scanner.svg";
 }

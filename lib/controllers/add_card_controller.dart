@@ -1,3 +1,4 @@
+import 'package:credit_card_scanner/credit_card_scanner.dart';
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/controllers/dash_board_controller.dart';
 import 'package:docsafe/main.dart';
@@ -52,5 +53,16 @@ class CardController extends GetxController {
       Get.back();
       kDebugPrint("======Card created successfully");
     }
+  }
+
+  Future<void> cardScanner() async {
+    var cardDetails = await CardScanner.scanCard(
+      scanOptions: const CardScanOptions(
+        scanCardHolderName: true,
+      )
+    );
+    cardHolderNameController.text = cardDetails!.cardHolderName;
+    cardNumberController.text = cardDetails.cardNumber;
+    expiryDateController.text = cardDetails.expiryDate;
   }
 }
