@@ -30,6 +30,7 @@ dependencies:
   flutter_screen_lock: ^9.0.1
   screen_protector: ^1.4.2
   credit_card_scanner: ^1.0.5
+  image_cropper: ^5.0.1
 
 dev_dependencies:
   flutter_test:

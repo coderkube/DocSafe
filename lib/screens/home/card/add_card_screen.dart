@@ -146,7 +146,8 @@ class AddCardScreen extends StatelessWidget {
                       showBackSide: controller.isCardFlip,
                       backTextColor: AppColors.kFFFFFF,
                       frontBackground: CardBackgrounds.custom(0XFFB370DD),
-                      backBackground: CardBackgrounds.custom(0XFFB370DD)),
+                      backBackground: CardBackgrounds.
+                      custom(0XFFB370DD)),
                 )
               ],
             ),

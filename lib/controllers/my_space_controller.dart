@@ -1,11 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
 import 'package:docsafe/config/color_file.dart';
 import 'package:docsafe/main.dart';
 import 'package:docsafe/models/folder_detail_model.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -120,13 +121,14 @@ class MySpaceController extends GetxController {
     update();
   }
 
-  Future pickImageInCamera() async {
+  Future pickImageInCamera(BuildContext context) async {
     final XFile? pickedFile = await picker.pickImage(
       source: ImageSource.camera,
     );
 
     if (pickedFile != null) {
       File image = File(pickedFile.path);
+
       List<int> fileBytes = await image.readAsBytes();
       String base64String = base64Encode(fileBytes);
       List<int> fileDecode = base64Decode(base64String);
@@ -134,23 +136,45 @@ class MySpaceController extends GetxController {
       final directory = Platform.isAndroid ? await getDownloadsDirectory() : await getApplicationDocumentsDirectory();
       File imageFile = await File("${directory?.path}/${pickedFile.name}").writeAsBytes(fileDecode);
 
-      Map<String, dynamic> uploadData = {
-        "mimeType": pickedFile.mimeType,
-        "path": imageFile.path,
-        "name": pickedFile.name
-      };
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: imageFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9,
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: AppColors.k6167DE,
+              toolbarWidgetColor: AppColors.kFFFFFF,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          // IOSUiSettings(
+          //   title: 'Cropper',
+          // ),
+        ],
+      );
 
-      Files fileData = Files.fromJson(uploadData);
+      if(croppedFile != null) {
+        Map<String, dynamic> uploadData = {
+          "mimeType": pickedFile.mimeType,
+          "path": croppedFile.path,
+          "name": pickedFile.name
+        };
 
-      isPinList ?
-      pinFolderList[selectedPinFolderIndex].files?.add(fileData) :
-      folderList[selectedIndex].files?.add(fileData);
+        Files fileData = Files.fromJson(uploadData);
 
-      isPinList ?
-      await localStorage.write('pinFolderList', pinFolderList.map((folderInfo) => folderInfo.toJson()).toList()) :
-      await localStorage.write('folderList', folderList.map((folderInfo) => folderInfo.toJson()).toList());
-    } else {
-      kDebugPrint('No image selected');
+        isPinList ?
+        pinFolderList[selectedPinFolderIndex].files?.add(fileData) :
+        folderList[selectedIndex].files?.add(fileData);
+
+        isPinList ?
+        await localStorage.write('pinFolderList', pinFolderList.map((folderInfo) => folderInfo.toJson()).toList()) :
+        await localStorage.write('folderList', folderList.map((folderInfo) => folderInfo.toJson()).toList());
+      }
     }
     update();
   }

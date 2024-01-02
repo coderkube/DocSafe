@@ -82,7 +82,7 @@ class SpaceItemScreen extends StatelessWidget {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              controller.pickImageInCamera();
+                                              controller.pickImageInCamera(context);
                                               Get.back();
                                             },
                                             child: Icon(
